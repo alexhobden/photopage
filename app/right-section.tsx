@@ -11,35 +11,39 @@ type Props = {
 export const RightSection = ({ title, duration = 2 }: Props) => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const [fontSize, setFontSize] = useState(64); // Default in px
-  const [displayText, setDisplayText] = useState(
-    title.split("").map(() => randomChar())
-  );
+  const [displayText, setDisplayText] = useState<string[]>([]);
 
   useEffect(() => {
+    let newTitleArray = title.split(""); // Split new title
+    setDisplayText(
+      Array(newTitleArray.length)
+        .fill("")
+        .map(() => randomChar())
+    );
+
     const interval = 50; // Speed of flickering
-    let currentText = title.split("");
     let indexesSettled: number[] = [];
 
     const flicker = setInterval(() => {
       setDisplayText((prev) =>
         prev.map((char, i) =>
-          indexesSettled.includes(i) ? currentText[i] : randomChar()
+          indexesSettled.includes(i) ? newTitleArray[i] : randomChar()
         )
       );
     }, interval);
 
     const settleLetters = setTimeout(() => {
       let delay = 0;
-      currentText.forEach((_, i) => {
+      newTitleArray.forEach((_, i) => {
         setTimeout(() => {
           indexesSettled.push(i);
         }, delay);
-        delay += (duration * 1000) / currentText.length;
+        delay += (duration * 1000) / newTitleArray.length;
       });
     }, 500);
 
     const finalize = setTimeout(() => {
-      setDisplayText(currentText);
+      setDisplayText(newTitleArray);
       clearInterval(flicker);
     }, duration * 1000);
 
@@ -48,9 +52,10 @@ export const RightSection = ({ title, duration = 2 }: Props) => {
       clearTimeout(settleLetters);
       clearTimeout(finalize);
     };
-  }, [title, duration]);
+  }, [title, duration]); // 🔥 Now it resets properly when `title` changes!
 
   useEffect(() => {
+    setFontSize(64);
     const adjustFontSize = () => {
       if (!titleRef.current) return;
 
@@ -69,7 +74,8 @@ export const RightSection = ({ title, duration = 2 }: Props) => {
     adjustFontSize();
     window.addEventListener("resize", adjustFontSize);
     return () => window.removeEventListener("resize", adjustFontSize);
-  }, [title]);
+  }, [displayText]);
+
   return (
     <div className="absolute lg:relative flex flex-col justify-end items-center lg:pb-8 lg:-left-12  h-full w-full lg:w-auto flex-1  font-glasgow">
       <div className="w-[90%] text-right">
@@ -78,10 +84,10 @@ export const RightSection = ({ title, duration = 2 }: Props) => {
         </p>
       </div>
       <div className="w-[90%] h-[0.8px] bg-white my-2"></div>
-      <div className="w-[90%] lg:24 text-center">
+      <div className="w-[90%] flex items-center justify-center lg:h-24 text-center">
         <h2
           ref={titleRef}
-          className=" uppercase justify-center overflow-hidden tracking-[0.75em] pt-2"
+          className="uppercase text-center overflow-hidden tracking-[0.75em] pt-2"
           style={{ fontSize: `${fontSize}px` }}
         >
           {displayText.map((char, i) => (

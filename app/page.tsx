@@ -5,7 +5,7 @@ import { MainImage } from "./main-image";
 import { RightSection } from "./right-section";
 
 export default function Home() {
-  const imageSrc = "Raven";
+  const imageSrc = "Spiderweb";
 
   return (
     <div className="relative h-full  w-screen flex flex-col lg:flex-row  text-white overflow-hidden">
