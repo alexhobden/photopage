@@ -78,10 +78,10 @@ export const RightSection = ({ title, duration = 2 }: Props) => {
         </p>
       </div>
       <div className="w-[90%] h-[0.8px] bg-white my-2"></div>
-      <div className="w-[90%] text-center">
+      <div className="w-[90%] lg:24 text-center">
         <h2
           ref={titleRef}
-          className=" uppercase justify-center inline-block tracking-[0.75em] pt-2"
+          className=" uppercase justify-center overflow-hidden tracking-[0.75em] pt-2"
           style={{ fontSize: `${fontSize}px` }}
         >
           {displayText.map((char, i) => (
