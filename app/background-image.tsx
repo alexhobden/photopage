@@ -3,7 +3,7 @@
 import Image from "next/image";
 
 type Props = {
-  imageSrc: string;
+  imageSrc: string | null;
   offset: { x: number; y: number }; // Ensure x and y are numbers
 };
 
@@ -20,16 +20,19 @@ export const ParallaxBackground = ({ imageSrc, offset }: Props) => {
         transition: "transform 0.1s linear", // Smooth movement
       }}
     >
-      <Image
-        src={`/${imageSrc}.jpg`}
-        alt="Background"
-        fill
-        objectFit="cover"
-        className="absolute w-screen h-full object-cover pointer-events-none"
-        style={{
-          transform: `translate(${offset.x}px, ${offset.y}px)`,
-        }}
-      />
+      {imageSrc && (
+        <Image
+          src={imageSrc}
+          alt="Background"
+          fill
+          objectFit="cover"
+          className="absolute w-screen h-full object-cover pointer-events-none"
+          style={{
+            transform: `translate(${offset.x}px, ${offset.y}px)`,
+          }}
+        />
+      )}
+      ;
     </div>
   );
 };

@@ -9,7 +9,7 @@ import { ParallaxBackground } from "./background-image";
 import { useState } from "react";
 
 export default function Home() {
-  const imageSrc = "Quays";
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -20,6 +20,15 @@ export default function Home() {
     const y = (clientY / height - 0.5) * -10;
 
     setOffset({ x, y });
+  };
+
+  const fetchRandomImage = async () => {
+    fetch("api/randomImage")
+      .then((res) => res.json())
+      .then((data) => console.log("API Response:", data));
+    const res = await fetch("/api/randomImage");
+    const data = await res.json();
+    if (data.image) setImageSrc(data.image);
   };
 
   return (
@@ -38,9 +47,9 @@ export default function Home() {
 
       {/* Main Image Section */}
       {/* Left Image */}
-      <MainImage ImageSrc={imageSrc} />
+      <MainImage imageSrc={imageSrc} />
       {/* Right Blurred Section */}
-      <RightSection title={imageSrc} />
+      <RightSection title={imageSrc} fetchRandomImage={fetchRandomImage} />
     </div>
   );
 }
