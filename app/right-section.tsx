@@ -2,19 +2,29 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { Shuffle } from "lucide-react";
 
 type Props = {
-  title: string;
+  title: string | null;
   duration?: number;
+  fetchRandomImage: () => void;
 };
 
-export const RightSection = ({ title, duration = 2 }: Props) => {
+export const RightSection = ({
+  title,
+  duration = 2,
+  fetchRandomImage,
+}: Props) => {
+  let titleclean = "";
+  if (title) {
+    titleclean = title ? title.split("/").pop()?.split(".")[0] || "" : "";
+  }
   const titleRef = useRef<HTMLHeadingElement>(null);
   const [fontSize, setFontSize] = useState(64); // Default in px
   const [displayText, setDisplayText] = useState<string[]>([]);
 
   useEffect(() => {
-    let newTitleArray = title.split(""); // Split new title
+    let newTitleArray = titleclean.split(""); // Split new title
     setDisplayText(
       Array(newTitleArray.length)
         .fill("")
@@ -78,6 +88,31 @@ export const RightSection = ({ title, duration = 2 }: Props) => {
 
   return (
     <div className="absolute lg:relative flex flex-col justify-end items-center lg:pb-8 lg:-left-12  h-full w-full lg:w-auto flex-1  font-glasgow">
+      {/* <div className="w-[90%] flex flex-1 items-center justify-end"> */}
+      <button onClick={fetchRandomImage} className="">
+        <motion.div
+          whileHover={{ scale: 1.2 }}
+          className="relative flex items-center justify-center w-14 h-14"
+        >
+          {/* Shuffle Icon Centered */}
+          <motion.div
+            whileHover={{ scale: 1.2 }}
+            className="z-10"
+            whileTap={{ scale: 0.9 }}
+          >
+            <Shuffle className="text-white w-6 h-6 stroke-1.3" />
+          </motion.div>
+          {/* Corner Borders */}
+          <motion.div
+            className="w-14 h-14 absolute"
+            whileHover={{ scale: 1.2 }}
+          >
+            <div className="border-white h-5 w-5 border-b-[0.8px] border-l-[0.8px] bottom-0 left-0 absolute"></div>
+            <div className="border-white h-5 w-5 border-t-[0.8px] border-r-[0.8px] top-0 right-0 absolute"></div>
+          </motion.div>
+        </motion.div>
+      </button>
+      {/* </div> */}
       <div className="w-[90%] text-right">
         <p className="text-[1em] tracking-widest opacity-90 right-1">
           DUISBURG
@@ -96,7 +131,7 @@ export const RightSection = ({ title, duration = 2 }: Props) => {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
-                delay: (i * duration) / title.length,
+                delay: (i * duration) / titleclean.length,
                 duration: 0.3,
                 ease: "easeOut",
               }}
