@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Footer from "./footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Alex Hobden Collections",
-  description: "Image Gallery",
+  description: "Image Gallery of me",
 };
 
 export default function RootLayout({

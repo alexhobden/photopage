@@ -24,7 +24,7 @@ export const RightSection = ({
   const [displayText, setDisplayText] = useState<string[]>([]);
 
   useEffect(() => {
-    let newTitleArray = titleclean.split(""); // Split new title
+    const newTitleArray = titleclean.split(""); // Split new title
     setDisplayText(
       Array(newTitleArray.length)
         .fill("")
@@ -32,7 +32,7 @@ export const RightSection = ({
     );
 
     const interval = 50; // Speed of flickering
-    let indexesSettled: number[] = [];
+    const indexesSettled: number[] = [];
 
     const flicker = setInterval(() => {
       setDisplayText((prev) =>

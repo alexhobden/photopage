@@ -1,8 +1,6 @@
 "use client";
 
-import Image from "next/image";
 import { Sidebar } from "./sidebar";
-import { Main } from "next/document";
 import { MainImage } from "./main-image";
 import { RightSection } from "./right-section";
 import { ParallaxBackground } from "./background-image";
