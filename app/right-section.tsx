@@ -62,7 +62,7 @@ export const RightSection = ({
       clearTimeout(settleLetters);
       clearTimeout(finalize);
     };
-  }, [title, duration]); // 🔥 Now it resets properly when `title` changes!
+  }, [title, duration]);
 
   useEffect(() => {
     setFontSize(64);
@@ -87,26 +87,19 @@ export const RightSection = ({
   }, [displayText]);
 
   return (
-    <div className="absolute lg:relative flex flex-col justify-end items-center lg:pb-8 lg:-left-12  h-full w-full lg:w-auto flex-1  font-glasgow">
+    <div className="absolute lg:relative  flex flex-col justify-end items-center lg:pb-8   h-full w-full lg:w-auto flex-1 font-glasgow">
       {/* <div className="w-[90%] flex flex-1 items-center justify-end"> */}
-      <button onClick={fetchRandomImage} className="">
+      <button onClick={fetchRandomImage} className="group">
         <motion.div
           whileHover={{ scale: 1.2 }}
           className="relative flex items-center justify-center w-14 h-14"
         >
           {/* Shuffle Icon Centered */}
-          <motion.div
-            whileHover={{ scale: 1.2 }}
-            className="z-10"
-            whileTap={{ scale: 0.9 }}
-          >
+          <motion.div className="z-10" whileTap={{ scale: 0.9 }}>
             <Shuffle className="text-white w-6 h-6 stroke-1.3" />
           </motion.div>
           {/* Corner Borders */}
-          <motion.div
-            className="w-14 h-14 absolute"
-            whileHover={{ scale: 1.2 }}
-          >
+          <motion.div className="w-14 h-14 absolute group-active:scale-125 transition-transform">
             <div className="border-white h-5 w-5 border-b-[0.8px] border-l-[0.8px] bottom-0 left-0 absolute"></div>
             <div className="border-white h-5 w-5 border-t-[0.8px] border-r-[0.8px] top-0 right-0 absolute"></div>
           </motion.div>
