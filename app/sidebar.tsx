@@ -1,6 +1,6 @@
 export const Sidebar = () => {
   return (
-    <div className="w-full lg:w-1/5 font-glasgow bg-green-500/20 p-4">
+    <div className="w-full lg:w-1/5 font-glasgow  p-4">
       <div>
         <div className="relative ">
           <h1 className="lg:text-[1.75em] font-light text-center tracking-[0.75em]">

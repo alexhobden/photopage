@@ -1,6 +1,8 @@
 "use client";
 
+import { motion } from "framer-motion";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 type Props = {
   imageSrc: string | null;
@@ -8,13 +10,24 @@ type Props = {
 };
 
 export const ParallaxBackground = ({ imageSrc, offset }: Props) => {
+  const [displayedImage, setDisplayedImage] = useState(imageSrc);
+
+  useEffect(() => {
+    if (imageSrc !== displayedImage) {
+      setTimeout(() => {
+        setDisplayedImage(imageSrc);
+      }, 500); // Change image mid-flip
+    }
+  }, [imageSrc]);
+
   return (
-    <div
+    <motion.div
+      key={imageSrc}
       className="absolute"
       style={{
-        width: "120vw", // ✅ 120% width of viewport
-        height: "120vh", // ✅ 120% height of viewport
-        left: "-10vw", // ✅ Centering trick
+        width: "120vw",
+        height: "120vh",
+        left: "-10vw",
         top: "-10vh",
         transform: `translate(${offset.x}px, ${offset.y}px)`, // ✅ Parallax effect
         transition: "transform 0.1s linear", // Smooth movement
@@ -22,7 +35,7 @@ export const ParallaxBackground = ({ imageSrc, offset }: Props) => {
     >
       {imageSrc && (
         <Image
-          src={imageSrc}
+          src={displayedImage || ""}
           alt="Background"
           fill
           objectFit="cover"
@@ -33,6 +46,6 @@ export const ParallaxBackground = ({ imageSrc, offset }: Props) => {
         />
       )}
       ;
-    </div>
+    </motion.div>
   );
 };

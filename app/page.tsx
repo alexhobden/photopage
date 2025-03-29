@@ -4,7 +4,7 @@ import { Sidebar } from "./sidebar";
 import { MainImage } from "./main-image";
 import { RightSection } from "./right-section";
 import { ParallaxBackground } from "./background-image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -20,6 +20,10 @@ export default function Home() {
     setOffset({ x, y });
   };
 
+  useEffect(() => {
+    fetchRandomImage();
+  }, []);
+
   const fetchRandomImage = async () => {
     fetch("api/randomImage")
       .then((res) => res.json())
@@ -27,6 +31,15 @@ export default function Home() {
     const res = await fetch("/api/randomImage");
     const data = await res.json();
     if (data.image) setImageSrc(data.image);
+  };
+
+  const fetchImage = async (imageName: string) => {
+    const res = await fetch(`/api/gallery/${imageName}`);
+    const data = await res.json();
+    if (data.image) {
+      setImageSrc("/gallery/" + data.image);
+    }
+    console.log("Image fetched:", data.image);
   };
 
   return (
@@ -47,7 +60,11 @@ export default function Home() {
       {/* Left Image */}
       <MainImage imageSrc={imageSrc} />
       {/* Right Blurred Section */}
-      <RightSection title={imageSrc} fetchRandomImage={fetchRandomImage} />
+      <RightSection
+        title={imageSrc}
+        fetchRandomImage={fetchRandomImage}
+        fetchImage={fetchImage}
+      />
     </div>
   );
 }
