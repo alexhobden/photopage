@@ -21,12 +21,7 @@ export const MainImage = ({ imageSrc, isGalleryVisible }: Props) => {
         setIsFlipping(false); // Reset after animation
       }, 500); // Change image mid-flip
     }
-  }, [imageSrc]);
-
-  useEffect(() => {
-    if (imageSrc !== displayedImage) {
-      setTimeout(() => setDisplayedImage(imageSrc), 500); // Change image mid-flip
-    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageSrc]);
 
   return (

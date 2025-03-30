@@ -8,7 +8,7 @@ import Gallery from "./gallery";
 interface Metadata {
   filename: string;
   location?: string;
-  [key: string]: any; // For additional properties if needed
+  [key: string]: unknown; // For additional properties if needed
 }
 
 type Props = {
@@ -37,8 +37,16 @@ export const RightSection = ({
   const [showGallery, setShowGallery] = useState(false);
   const [resetTimer, setResetTimer] = useState(0);
   const [isShuffleDisabled, setIsShuffleDisabled] = useState(false);
-  const [metadata, setMetadata] = useState<any>(null); // Adjust type as needed
-  const [matchedMetadata, setMatchedMetadata] = useState<any | undefined>(null);
+  const [metadata, setMetadata] = useState<Metadata[]>([
+    {
+      filename: "",
+      location: "",
+    },
+  ]); // Adjust type as needed
+  const [matchedMetadata, setMatchedMetadata] = useState<Metadata | undefined>({
+    filename: "",
+    location: "",
+  }); // Adjust type as needed
 
   const handleShuffleClick = () => {
     if (isShuffleDisabled) return; // Prevent double-clicks
@@ -49,11 +57,6 @@ export const RightSection = ({
     setIsShuffleDisabled(true); // Disable the button
     setTimeout(() => setIsShuffleDisabled(false), 1000); // Enable after 1s
   };
-
-  let imageData: Metadata | undefined = undefined;
-  if (metadata) {
-    imageData = metadata.find((m: Metadata) => m.filename === title);
-  }
 
   useEffect(() => {
     const newTitleArray = titleclean.split(""); // Split new title
@@ -98,12 +101,14 @@ export const RightSection = ({
       clearTimeout(settleLetters);
       clearTimeout(finalize);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [title, duration]);
 
   useEffect(() => {
     setMatchedMetadata(
       metadata?.find((m: Metadata) => m.filename === `${titleclean}.jpg`)
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [metadata]);
 
   useEffect(() => {
@@ -126,6 +131,7 @@ export const RightSection = ({
     adjustFontSize();
     window.addEventListener("resize", adjustFontSize);
     return () => window.removeEventListener("resize", adjustFontSize);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [displayText]);
 
   useEffect(() => {
@@ -140,6 +146,7 @@ export const RightSection = ({
     return () => {
       if (interval) clearInterval(interval);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPlaying, resetTimer]);
 
   const handleResetTimer = () => {

@@ -18,6 +18,7 @@ export const ParallaxBackground = ({ imageSrc, offset }: Props) => {
       setPrevImage(currentImage); // Store previous image
       setCurrentImage(imageSrc);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageSrc]);
 
   return (
