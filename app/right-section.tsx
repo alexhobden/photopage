@@ -5,6 +5,12 @@ import { motion } from "framer-motion";
 import { Play, Pause, Shuffle, LayoutGrid } from "lucide-react";
 import Gallery from "./gallery";
 
+interface Metadata {
+  filename: string;
+  location?: string;
+  [key: string]: any; // For additional properties if needed
+}
+
 type Props = {
   title: string | null;
   duration?: number;
@@ -31,6 +37,8 @@ export const RightSection = ({
   const [showGallery, setShowGallery] = useState(false);
   const [resetTimer, setResetTimer] = useState(0);
   const [isShuffleDisabled, setIsShuffleDisabled] = useState(false);
+  const [metadata, setMetadata] = useState<any>(null); // Adjust type as needed
+  const [matchedMetadata, setMatchedMetadata] = useState<any | undefined>(null);
 
   const handleShuffleClick = () => {
     if (isShuffleDisabled) return; // Prevent double-clicks
@@ -41,6 +49,11 @@ export const RightSection = ({
     setIsShuffleDisabled(true); // Disable the button
     setTimeout(() => setIsShuffleDisabled(false), 1000); // Enable after 1s
   };
+
+  let imageData: Metadata | undefined = undefined;
+  if (metadata) {
+    imageData = metadata.find((m: Metadata) => m.filename === title);
+  }
 
   useEffect(() => {
     const newTitleArray = titleclean.split(""); // Split new title
@@ -75,6 +88,10 @@ export const RightSection = ({
       setDisplayText(newTitleArray);
       clearInterval(flicker);
     }, duration * 1000);
+    fetch("/meta/gallery.json")
+      .then((res) => res.json())
+      .then((data) => setMetadata(data));
+    console.log("Metadata fetched:", metadata);
 
     return () => {
       clearInterval(flicker);
@@ -82,6 +99,12 @@ export const RightSection = ({
       clearTimeout(finalize);
     };
   }, [title, duration]);
+
+  useEffect(() => {
+    setMatchedMetadata(
+      metadata?.find((m: Metadata) => m.filename === `${titleclean}.jpg`)
+    );
+  }, [metadata]);
 
   useEffect(() => {
     setFontSize(64);
@@ -127,7 +150,7 @@ export const RightSection = ({
     <div className="absolute lg:relative  flex flex-col justify-end items-center lg:pb-8   h-full w-full lg:w-auto flex-1 font-glasgow z-30">
       {showGallery && <Gallery fetchImage={fetchImage} />}
 
-      <div className="flex gap-12">
+      <div className="flex gap-12 lg:pb-auto pb-4">
         <button
           onClick={() => {
             setShowGallery((prev) => !prev);
@@ -188,9 +211,9 @@ export const RightSection = ({
         </button>
       </div>
       {/* </div> */}
-      <div className="w-[90%] text-right">
-        <p className="text-[1em] tracking-widest opacity-90 right-1">
-          DUISBURG
+      <div className="w-[90%] lg:block hidden text-right">
+        <p className="text-[1em] tracking-widest uppercase opacity-90 right-1">
+          {matchedMetadata?.location || "Unknown Location"}
         </p>
       </div>
       <div className="w-[90%] h-[0.8px] bg-white my-2"></div>
