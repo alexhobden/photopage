@@ -6,9 +6,10 @@ import { useEffect, useState } from "react";
 
 type Props = {
   imageSrc: string | null;
+  isGalleryVisible: boolean;
 };
 
-export const MainImage = ({ imageSrc }: Props) => {
+export const MainImage = ({ imageSrc, isGalleryVisible }: Props) => {
   const [displayedImage, setDisplayedImage] = useState(imageSrc);
   const [isFlipping, setIsFlipping] = useState(false); // Track animation state
 
@@ -20,21 +21,12 @@ export const MainImage = ({ imageSrc }: Props) => {
         setIsFlipping(false); // Reset after animation
       }, 500); // Change image mid-flip
     }
-    console.log("Image changed:", imageSrc);
-  }, [imageSrc]);
-
-  useEffect(() => {
-    if (imageSrc !== displayedImage) {
-      setTimeout(() => setDisplayedImage(imageSrc), 500); // Change image mid-flip
-    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageSrc]);
 
   return (
     <div className="h-full flex flex-col justify-center">
-      <motion.div
-        // Smooth effect
-        className=" relative h-[calc(100%-112px)] aspect-[2/3]"
-      >
+      <motion.div className=" relative h-[calc(100%-76px)] -top-14 lg:top-auto lg:h-[calc(100%-112px)] aspect-[2/3]">
         {imageSrc && (
           <>
             <motion.div
@@ -45,14 +37,18 @@ export const MainImage = ({ imageSrc }: Props) => {
                 skewY: [0, 10, 0],
               }} // Grow then shrink
               transition={{ duration: 1, ease: "easeInOut" }}
-              className="relative w-full h-full"
+              className={`relative w-full h-full  ${
+                !isGalleryVisible ? "hidden lg:block" : ""
+              }`}
             >
-              <Image
-                src={displayedImage || ""} // Ensure src is always a valid string
-                alt="Skull"
-                fill
-                objectFit="contain"
-              />
+              {displayedImage && (
+                <Image
+                  src={displayedImage || ""}
+                  alt="Skull"
+                  fill
+                  objectFit="contain"
+                />
+              )}
             </motion.div>
             <motion.div
               initial={{ scale: 1 }}

@@ -5,11 +5,18 @@ import { motion } from "framer-motion";
 import { Play, Pause, Shuffle, LayoutGrid } from "lucide-react";
 import Gallery from "./gallery";
 
+interface Metadata {
+  filename: string;
+  location?: string;
+  [key: string]: unknown; // For additional properties if needed
+}
+
 type Props = {
   title: string | null;
   duration?: number;
   fetchRandomImage: () => void;
   fetchImage: (imageName: string) => void;
+  setIsGalleryVisible: (visible: boolean) => void;
 };
 
 export const RightSection = ({
@@ -17,6 +24,7 @@ export const RightSection = ({
   duration = 2,
   fetchRandomImage,
   fetchImage,
+  setIsGalleryVisible,
 }: Props) => {
   let titleclean = "";
   if (title) {
@@ -27,6 +35,28 @@ export const RightSection = ({
   const [displayText, setDisplayText] = useState<string[]>([]);
   const [isPlaying, setIsPlaying] = useState(true);
   const [showGallery, setShowGallery] = useState(false);
+  const [resetTimer, setResetTimer] = useState(0);
+  const [isShuffleDisabled, setIsShuffleDisabled] = useState(false);
+  const [metadata, setMetadata] = useState<Metadata[]>([
+    {
+      filename: "",
+      location: "",
+    },
+  ]); // Adjust type as needed
+  const [matchedMetadata, setMatchedMetadata] = useState<Metadata | undefined>({
+    filename: "",
+    location: "",
+  }); // Adjust type as needed
+
+  const handleShuffleClick = () => {
+    if (isShuffleDisabled) return; // Prevent double-clicks
+
+    fetchRandomImage();
+    handleResetTimer();
+
+    setIsShuffleDisabled(true); // Disable the button
+    setTimeout(() => setIsShuffleDisabled(false), 1000); // Enable after 1s
+  };
 
   useEffect(() => {
     const newTitleArray = titleclean.split(""); // Split new title
@@ -61,13 +91,25 @@ export const RightSection = ({
       setDisplayText(newTitleArray);
       clearInterval(flicker);
     }, duration * 1000);
+    fetch("/meta/gallery.json")
+      .then((res) => res.json())
+      .then((data) => setMetadata(data));
+    console.log("Metadata fetched:", metadata);
 
     return () => {
       clearInterval(flicker);
       clearTimeout(settleLetters);
       clearTimeout(finalize);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [title, duration]);
+
+  useEffect(() => {
+    setMatchedMetadata(
+      metadata?.find((m: Metadata) => m.filename === `${titleclean}.jpg`)
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [metadata]);
 
   useEffect(() => {
     setFontSize(64);
@@ -89,6 +131,7 @@ export const RightSection = ({
     adjustFontSize();
     window.addEventListener("resize", adjustFontSize);
     return () => window.removeEventListener("resize", adjustFontSize);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [displayText]);
 
   useEffect(() => {
@@ -98,22 +141,29 @@ export const RightSection = ({
       interval = setInterval(() => {
         fetchRandomImage();
       }, 10000);
-    } else if (interval) {
-      clearInterval(interval);
     }
 
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [isPlaying]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isPlaying, resetTimer]);
+
+  const handleResetTimer = () => {
+    setResetTimer((prev) => prev + 1);
+  };
 
   return (
-    <div className="absolute lg:relative  flex flex-col justify-end items-center lg:pb-8   h-full w-full lg:w-auto flex-1 font-glasgow">
+    <div className="absolute lg:relative  flex flex-col justify-end items-center lg:pb-8   h-full w-full lg:w-auto flex-1 font-glasgow z-30">
       {showGallery && <Gallery fetchImage={fetchImage} />}
 
-      <div className="flex gap-12">
+      <div className="flex gap-12 lg:pb-auto pb-4">
         <button
-          onClick={() => setShowGallery((prev) => !prev)}
+          onClick={() => {
+            setShowGallery((prev) => !prev);
+            setIsGalleryVisible(showGallery);
+            handleResetTimer();
+          }}
           className="group "
         >
           <motion.div
@@ -150,7 +200,7 @@ export const RightSection = ({
             </motion.div>
           </motion.div>
         </button>
-        <button onClick={fetchRandomImage} className="group">
+        <button onClick={handleShuffleClick} className="group">
           <motion.div
             whileHover={{ scale: 1.2 }}
             className="relative flex items-center justify-center w-14 h-14"
@@ -168,13 +218,13 @@ export const RightSection = ({
         </button>
       </div>
       {/* </div> */}
-      <div className="w-[90%] text-right">
-        <p className="text-[1em] tracking-widest opacity-90 right-1">
-          DUISBURG
+      <div className="w-[90%] lg:block hidden text-right">
+        <p className="text-[1em] tracking-widest uppercase opacity-90 right-1">
+          {matchedMetadata?.location || "Unknown Location"}
         </p>
       </div>
       <div className="w-[90%] h-[0.8px] bg-white my-2"></div>
-      <div className="w-[90%] flex items-center justify-center lg:h-24 text-center">
+      <div className="w-[90%] flex items-center justify-center lg:h-24 h-14 text-center">
         <h2
           ref={titleRef}
           className="uppercase text-center overflow-hidden tracking-[0.75em] pt-2"

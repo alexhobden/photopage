@@ -19,12 +19,22 @@ export default function Gallery({ fetchImage }: Props) {
   }, []);
 
   return (
-    <div className="grid grid-cols-4 flex-1 w-full px-20 pt-32 overflow-auto pb-8 gap-4">
+    <div className="grid grid-cols-2 lg:grid-cols-4 flex-1 w-full px-4 lg:px-16 pt-8 lg:pt-12 mt-28 lg:mt-14 overflow-auto scrollbar-hide mb-8 gap-6 z-20">
       {images.map((src, index) => (
-        <div
+        <motion.div
           key={index}
-          className=" aspect-[2/3] border-[0.8px] "
-          onClick={() => fetchImage(src.split("/").pop() || "")}
+          whileHover={{ scale: 1.05 }}
+          transition={{
+            ease: "easeInOut",
+          }}
+          className=" aspect-[2/3] group "
+          onClick={() => {
+            setIsFlipping(true);
+            fetchImage(src.split("/").pop() || "");
+            setTimeout(() => {
+              setIsFlipping(false);
+            }, 1000); // Adjust the timeout to match your animation duration
+          }}
         >
           <Image
             src={src}
@@ -41,7 +51,7 @@ export default function Gallery({ fetchImage }: Props) {
               duration: 1,
               ease: [0.2, 0.8, 0.2, 1],
             }}
-            className="hidden lg:block border-white w-[15%] aspect-square border-b-[0.8px] border-l-[0.8px] -bottom-2 -left-2 lg:absolute"
+            className="hidden group-hover:block border-white  w-[15%] aspect-square border-b-[0.8px] border-l-[0.8px] -bottom-2 -left-2 lg:absolute"
           />
           <motion.div
             initial={{ scale: 1 }}
@@ -51,9 +61,9 @@ export default function Gallery({ fetchImage }: Props) {
               duration: 1,
               ease: [0.2, 0.8, 0.2, 1],
             }}
-            className="hidden lg:block border-white  w-[15%] aspect-square border-t-[0.8px] border-r-[0.8px] -top-2 -right-2 lg:absolute"
+            className="hidden group-hover:block  border-white  w-[15%] aspect-square border-t-[0.8px] border-r-[0.8px] -top-2 -right-2 lg:absolute"
           ></motion.div>
-        </div>
+        </motion.div>
       ))}
     </div>
   );

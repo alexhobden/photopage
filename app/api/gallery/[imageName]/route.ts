@@ -2,9 +2,9 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   req: Request,
-  { params }: { params: { imageName: string } }
+  { params }: { params: Promise<{ imageName: string }> }
 ) {
-  const { imageName } = params;
+  const { imageName } = await params;
 
   // Construct the public image URL
   const imageUrl = `${imageName}`;
