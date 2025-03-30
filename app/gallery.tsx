@@ -21,10 +21,20 @@ export default function Gallery({ fetchImage }: Props) {
   return (
     <div className="grid grid-cols-4 flex-1 w-full px-20 pt-32 overflow-auto pb-8 gap-4">
       {images.map((src, index) => (
-        <div
+        <motion.div
           key={index}
+          whileHover={{ scale: 1.05 }}
+          transition={{
+            ease: "easeInOut",
+          }}
           className=" aspect-[2/3] border-[0.8px] "
-          onClick={() => fetchImage(src.split("/").pop() || "")}
+          onClick={() => {
+            setIsFlipping(true);
+            fetchImage(src.split("/").pop() || "");
+            setTimeout(() => {
+              setIsFlipping(false);
+            }, 1000); // Adjust the timeout to match your animation duration
+          }}
         >
           <Image
             src={src}
@@ -53,7 +63,7 @@ export default function Gallery({ fetchImage }: Props) {
             }}
             className="hidden lg:block border-white  w-[15%] aspect-square border-t-[0.8px] border-r-[0.8px] -top-2 -right-2 lg:absolute"
           ></motion.div>
-        </div>
+        </motion.div>
       ))}
     </div>
   );

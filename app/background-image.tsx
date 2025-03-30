@@ -1,51 +1,78 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
 type Props = {
   imageSrc: string | null;
-  offset: { x: number; y: number }; // Ensure x and y are numbers
+  offset: { x: number; y: number };
 };
 
 export const ParallaxBackground = ({ imageSrc, offset }: Props) => {
-  const [displayedImage, setDisplayedImage] = useState(imageSrc);
+  const [prevImage, setPrevImage] = useState<string | null>(null);
+  const [currentImage, setCurrentImage] = useState<string | null>(imageSrc);
 
   useEffect(() => {
-    if (imageSrc !== displayedImage) {
-      setTimeout(() => {
-        setDisplayedImage(imageSrc);
-      }, 500); // Change image mid-flip
+    if (imageSrc && imageSrc !== currentImage) {
+      setPrevImage(currentImage); // Store previous image
+      setCurrentImage(imageSrc);
     }
   }, [imageSrc]);
 
   return (
     <motion.div
-      key={imageSrc}
-      className="absolute"
+      className="absolute overflow-hidden"
       style={{
         width: "120vw",
         height: "120vh",
         left: "-10vw",
         top: "-10vh",
-        transform: `translate(${offset.x}px, ${offset.y}px)`, // ✅ Parallax effect
-        transition: "transform 0.1s linear", // Smooth movement
+        transform: `translate(${offset.x}px, ${offset.y}px)`,
+        transition: "transform 0.1s linear",
       }}
     >
-      {imageSrc && (
-        <Image
-          src={displayedImage || ""}
-          alt="Background"
-          fill
-          objectFit="cover"
-          className="absolute w-screen h-full object-cover pointer-events-none"
-          style={{
-            transform: `translate(${offset.x}px, ${offset.y}px)`,
-          }}
-        />
-      )}
-      ;
+      {/* AnimatePresence to handle old image fading out */}
+      <AnimatePresence mode="wait">
+        {prevImage && (
+          <motion.div
+            key={prevImage} // Track previous image
+            initial={{ opacity: 1 }}
+            animate={{ opacity: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1 }} // Smooth fade out
+            className="absolute w-full h-full"
+          >
+            <Image
+              src={prevImage}
+              alt="Previous Background"
+              fill
+              objectFit="cover"
+              className="w-full h-full object-cover pointer-events-none"
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <AnimatePresence mode="wait">
+        {/* New Image fades in smoothly */}
+        {currentImage && (
+          <motion.div
+            key={currentImage} // Track new image
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }} // Smooth fade in
+            className="absolute w-full h-full"
+          >
+            <Image
+              src={currentImage}
+              alt="Current Background"
+              fill
+              objectFit="cover"
+              className="w-full h-full object-cover pointer-events-none"
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 };
