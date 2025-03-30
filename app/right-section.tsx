@@ -140,7 +140,7 @@ export const RightSection = ({
     if (isPlaying) {
       interval = setInterval(() => {
         fetchRandomImage();
-      }, 10000);
+      }, 8000);
     }
 
     return () => {

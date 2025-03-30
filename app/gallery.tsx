@@ -24,7 +24,7 @@ export default function Gallery({ fetchImage }: Props) {
       <motion.div
         initial={{ y: 800 }}
         animate={{ y: 0 }}
-        exit={{ y: 800 }}
+        exit={{ y: 1200 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="grid grid-cols-2 lg:grid-cols-4 flex-1 w-full px-4 lg:px-16 pt-8 lg:pt-12    gap-6 z-20"
       >
