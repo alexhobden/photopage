@@ -19,7 +19,7 @@ export default function Gallery({ fetchImage }: Props) {
   }, []);
 
   return (
-    <div className="grid grid-cols-4 flex-1 w-full px-16 pt-12 mt-14 overflow-auto scrollbar-hide mb-8 gap-6">
+    <div className="grid grid-cols-2 lg:grid-cols-4 flex-1 w-full px-4 lg:px-16 pt-8 lg:pt-12 mt-28 lg:mt-14 overflow-auto scrollbar-hide mb-8 gap-6 z-20">
       {images.map((src, index) => (
         <motion.div
           key={index}

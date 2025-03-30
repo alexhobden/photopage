@@ -10,6 +10,7 @@ type Props = {
   duration?: number;
   fetchRandomImage: () => void;
   fetchImage: (imageName: string) => void;
+  setIsGalleryVisible: (visible: boolean) => void;
 };
 
 export const RightSection = ({
@@ -17,6 +18,7 @@ export const RightSection = ({
   duration = 2,
   fetchRandomImage,
   fetchImage,
+  setIsGalleryVisible,
 }: Props) => {
   let titleclean = "";
   if (title) {
@@ -122,13 +124,14 @@ export const RightSection = ({
   };
 
   return (
-    <div className="absolute lg:relative  flex flex-col justify-end items-center lg:pb-8   h-full w-full lg:w-auto flex-1 font-glasgow">
+    <div className="absolute lg:relative  flex flex-col justify-end items-center lg:pb-8   h-full w-full lg:w-auto flex-1 font-glasgow z-30">
       {showGallery && <Gallery fetchImage={fetchImage} />}
 
       <div className="flex gap-12">
         <button
           onClick={() => {
             setShowGallery((prev) => !prev);
+            setIsGalleryVisible(showGallery);
             handleResetTimer();
           }}
           className="group "
@@ -191,7 +194,7 @@ export const RightSection = ({
         </p>
       </div>
       <div className="w-[90%] h-[0.8px] bg-white my-2"></div>
-      <div className="w-[90%] flex items-center justify-center lg:h-24 text-center">
+      <div className="w-[90%] flex items-center justify-center lg:h-24 h-14 text-center">
         <h2
           ref={titleRef}
           className="uppercase text-center overflow-hidden tracking-[0.75em] pt-2"

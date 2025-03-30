@@ -6,9 +6,10 @@ import { useEffect, useState } from "react";
 
 type Props = {
   imageSrc: string | null;
+  isGalleryVisible: boolean;
 };
 
-export const MainImage = ({ imageSrc }: Props) => {
+export const MainImage = ({ imageSrc, isGalleryVisible }: Props) => {
   const [displayedImage, setDisplayedImage] = useState(imageSrc);
   const [isFlipping, setIsFlipping] = useState(false); // Track animation state
 
@@ -33,7 +34,7 @@ export const MainImage = ({ imageSrc }: Props) => {
     <div className="h-full flex flex-col justify-center">
       <motion.div
         // Smooth effect
-        className=" relative h-[calc(100%-76px)] -top-12 lg:top-auto lg:h-[calc(100%-112px)] aspect-[2/3]"
+        className=" relative h-[calc(100%-76px)] -top-14 lg:top-auto lg:h-[calc(100%-112px)] aspect-[2/3]"
       >
         {imageSrc && (
           <>
@@ -45,7 +46,9 @@ export const MainImage = ({ imageSrc }: Props) => {
                 skewY: [0, 10, 0],
               }} // Grow then shrink
               transition={{ duration: 1, ease: "easeInOut" }}
-              className="relative w-full h-full"
+              className={`relative w-full h-full ${
+                !isGalleryVisible ? "hidden lg:block" : ""
+              }`}
             >
               <Image
                 src={displayedImage || ""} // Ensure src is always a valid string
