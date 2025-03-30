@@ -33,7 +33,7 @@ export const MainImage = ({ imageSrc }: Props) => {
     <div className="h-full flex flex-col justify-center">
       <motion.div
         // Smooth effect
-        className=" relative h-[calc(100%-112px)] aspect-[2/3]"
+        className=" relative h-[calc(100%-76px)] -top-12 lg:top-auto lg:h-[calc(100%-112px)] aspect-[2/3]"
       >
         {imageSrc && (
           <>
