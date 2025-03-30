@@ -27,6 +27,18 @@ export const RightSection = ({
   const [displayText, setDisplayText] = useState<string[]>([]);
   const [isPlaying, setIsPlaying] = useState(true);
   const [showGallery, setShowGallery] = useState(false);
+  const [resetTimer, setResetTimer] = useState(0);
+  const [isShuffleDisabled, setIsShuffleDisabled] = useState(false);
+
+  const handleShuffleClick = () => {
+    if (isShuffleDisabled) return; // Prevent double-clicks
+
+    fetchRandomImage();
+    handleResetTimer();
+
+    setIsShuffleDisabled(true); // Disable the button
+    setTimeout(() => setIsShuffleDisabled(false), 1000); // Enable after 1s
+  };
 
   useEffect(() => {
     const newTitleArray = titleclean.split(""); // Split new title
@@ -98,14 +110,16 @@ export const RightSection = ({
       interval = setInterval(() => {
         fetchRandomImage();
       }, 10000);
-    } else if (interval) {
-      clearInterval(interval);
     }
 
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [isPlaying]);
+  }, [isPlaying, resetTimer]);
+
+  const handleResetTimer = () => {
+    setResetTimer((prev) => prev + 1);
+  };
 
   return (
     <div className="absolute lg:relative  flex flex-col justify-end items-center lg:pb-8   h-full w-full lg:w-auto flex-1 font-glasgow">
@@ -113,7 +127,10 @@ export const RightSection = ({
 
       <div className="flex gap-12">
         <button
-          onClick={() => setShowGallery((prev) => !prev)}
+          onClick={() => {
+            setShowGallery((prev) => !prev);
+            handleResetTimer();
+          }}
           className="group "
         >
           <motion.div
@@ -150,7 +167,7 @@ export const RightSection = ({
             </motion.div>
           </motion.div>
         </button>
-        <button onClick={fetchRandomImage} className="group">
+        <button onClick={handleShuffleClick} className="group">
           <motion.div
             whileHover={{ scale: 1.2 }}
             className="relative flex items-center justify-center w-14 h-14"
