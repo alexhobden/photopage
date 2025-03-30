@@ -1,8 +1,8 @@
-## Potopage
+# Potopage
 
 This is my Project for displaying my photos.
 
-##How to use
+### How to use
 
 Currently the app works withoud a database. to display your Images, store them in the public/gallery folder.
 
