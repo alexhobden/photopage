@@ -25,7 +25,7 @@ export default function Gallery({ fetchImage }: Props) {
         animate={{ y: 0 }}
         exit={{ y: 1200 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="grid grid-cols-2 lg:grid-cols-4 flex-1 w-full px-4 lg:px-16 pt-8 lg:pt-12    gap-6 z-20"
+        className="grid grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 flex-1 w-full px-4 lg:px-16 pt-8 lg:pt-12    gap-6 z-20"
       >
         {images.map((src, index) => (
           <motion.div
