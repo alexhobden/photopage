@@ -163,7 +163,12 @@ export const RightSection = ({
   return (
     <div className="absolute lg:relative  flex flex-col justify-end items-center lg:pb-8   h-full w-full lg:w-auto flex-1 font-glasgow z-30">
       <AnimatePresence>
-        {showGallery && <Gallery fetchImage={fetchImage} />}
+        {showGallery && (
+          <Gallery
+            handleResetTimer={handleResetTimer}
+            fetchImage={fetchImage}
+          />
+        )}
       </AnimatePresence>
       <div className="flex gap-12 lg:pb-auto pb-4">
         <button
