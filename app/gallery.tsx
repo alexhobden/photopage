@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { div } from "framer-motion/client";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -32,6 +31,7 @@ export default function Gallery({ fetchImage }: Props) {
           <motion.div
             key={index}
             whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.9 }}
             transition={{
               ease: "easeInOut",
             }}
