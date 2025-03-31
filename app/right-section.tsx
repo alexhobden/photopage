@@ -36,6 +36,7 @@ export const RightSection = ({
   const [isPlaying, setIsPlaying] = useState(true);
   const [showGallery, setShowGallery] = useState(false);
   const [resetTimer, setResetTimer] = useState(0);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [isShuffleDisabled, setIsShuffleDisabled] = useState(false);
   const [metadata, setMetadata] = useState<Metadata[]>([
     {
@@ -135,18 +136,24 @@ export const RightSection = ({
   }, [displayText]);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
+    if (!isPlaying) return;
 
-    if (isPlaying) {
-      interval = setInterval(() => {
-        fetchRandomImage();
-      }, 8000);
+    // Clear old interval if any
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
     }
 
+    // Start a new one
+    intervalRef.current = setInterval(() => {
+      fetchRandomImage();
+    }, 7000);
+
+    // Clear on unmount
     return () => {
-      if (interval) clearInterval(interval);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPlaying, resetTimer]);
 
   const handleResetTimer = () => {
@@ -156,7 +163,12 @@ export const RightSection = ({
   return (
     <div className="absolute lg:relative  flex flex-col justify-end items-center lg:pb-8   h-full w-full lg:w-auto flex-1 font-glasgow z-30">
       <AnimatePresence>
-        {showGallery && <Gallery fetchImage={fetchImage} />}
+        {showGallery && (
+          <Gallery
+            handleResetTimer={handleResetTimer}
+            fetchImage={fetchImage}
+          />
+        )}
       </AnimatePresence>
       <div className="flex gap-12 lg:pb-auto pb-4">
         <button

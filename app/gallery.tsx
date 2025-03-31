@@ -6,9 +6,10 @@ import { useEffect, useState } from "react";
 
 type Props = {
   fetchImage: (imageName: string) => void;
+  handleResetTimer: () => void;
 };
 
-export default function Gallery({ fetchImage }: Props) {
+export default function Gallery({ fetchImage, handleResetTimer }: Props) {
   const [images, setImages] = useState<string[]>([]);
   const [isFlipping, setIsFlipping] = useState(false);
 
@@ -37,6 +38,7 @@ export default function Gallery({ fetchImage }: Props) {
             }}
             className=" aspect-[2/3] group "
             onClick={() => {
+              handleResetTimer();
               setIsFlipping(true);
               fetchImage(src.split("/").pop() || "");
               setTimeout(() => {
