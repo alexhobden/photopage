@@ -161,7 +161,7 @@ export const RightSection = ({
   };
 
   return (
-    <div className="absolute lg:relative  flex flex-col justify-end items-center lg:pb-8   h-full w-full lg:w-auto flex-1 font-glasgow z-30">
+    <div className="absolute lg:relative pb-24  flex flex-col justify-end items-center lg:pb-8   h-full w-full lg:w-auto flex-1 font-glasgow z-30">
       <AnimatePresence>
         {showGallery && (
           <Gallery
