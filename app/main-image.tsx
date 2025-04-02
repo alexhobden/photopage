@@ -25,7 +25,7 @@ export const MainImage = ({ imageSrc, isGalleryVisible }: Props) => {
   }, [imageSrc]);
 
   return (
-    <div className="h-full flex flex-col justify-center">
+    <div className="lg:h-full flex-1 lg:flex-none flex flex-col justify-center">
       <motion.div className=" relative h-[calc(100%-76px)] -top-14 lg:top-auto lg:h-[calc(100%-112px)] aspect-[2/3]">
         {imageSrc && (
           <>
