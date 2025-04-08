@@ -161,7 +161,7 @@ export const RightSection = ({
   };
 
   return (
-    <div className="absolute lg:relative pb-24  flex flex-col justify-end items-center lg:pb-8   h-full w-full lg:w-auto flex-1 font-glasgow z-30">
+    <div className=" relative   flex flex-col lg:justify-end items-center lg:pb-8   h-full w-full lg:w-auto flex-1 font-glasgow z-30">
       <AnimatePresence>
         {showGallery && (
           <Gallery
@@ -170,7 +170,7 @@ export const RightSection = ({
           />
         )}
       </AnimatePresence>
-      <div className="flex gap-12 lg:pb-auto pb-4">
+      <div className=" lg:relative -top-20 lg:top-auto absolute flex gap-12 lg:pb-auto pb-4">
         <button
           onClick={() => {
             setShowGallery((prev) => !prev);

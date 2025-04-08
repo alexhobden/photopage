@@ -25,8 +25,8 @@ export const MainImage = ({ imageSrc, isGalleryVisible }: Props) => {
   }, [imageSrc]);
 
   return (
-    <div className="lg:h-full flex-1 lg:flex-none flex flex-col justify-center">
-      <motion.div className=" relative h-[calc(100%-76px)] -top-14 lg:top-auto lg:h-[calc(100%-112px)] aspect-[2/3]">
+    <div className="lg:h-full flex-1 lg:flex-none px-4 flex flex-col justify-center">
+      <motion.div className=" relative h-fit  lg:top-auto lg:h-[calc(100%-112px)] aspect-[2/3]">
         {imageSrc && (
           <>
             <motion.div
@@ -37,7 +37,7 @@ export const MainImage = ({ imageSrc, isGalleryVisible }: Props) => {
                 skewY: [0, 10, 0],
               }} // Grow then shrink
               transition={{ duration: 1, ease: "easeInOut" }}
-              className={`relative w-full h-full  ${
+              className={`relative w-full h-full lg:h-full   ${
                 !isGalleryVisible ? "hidden lg:block" : ""
               }`}
             >
@@ -47,6 +47,7 @@ export const MainImage = ({ imageSrc, isGalleryVisible }: Props) => {
                   alt="Skull"
                   fill
                   objectFit="contain"
+                  className="bg-blue-500/20 h-min"
                 />
               )}
             </motion.div>

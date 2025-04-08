@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 export default function Home() {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
-  const [isGalleryVisible, setIsGalleryVisible] = useState(false);
+  const [isGalleryVisible, setIsGalleryVisible] = useState(true);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { clientX, clientY, currentTarget } = e;
@@ -45,7 +45,7 @@ export default function Home() {
 
   return (
     <div
-      className="relative lg:pb-0 pb-20 h-full  w-screen flex lg:gap-8 flex-col lg:flex-row  text-white overflow-hidden"
+      className="relative lg:pb-0 pb-20 h-svh lg:h-full  w-screen flex lg:gap-8 flex-col lg:flex-row  text-white overflow-hidden"
       onMouseMove={handleMouseMove}
     >
       {/* Fullscreen Background Image */}

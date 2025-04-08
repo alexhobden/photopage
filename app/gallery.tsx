@@ -20,7 +20,7 @@ export default function Gallery({ fetchImage, handleResetTimer }: Props) {
   }, []);
 
   return (
-    <div className="relative overflow-y-scroll h-full scrollbar-hide z-0 mb-8 mt-28 lg:mt-14">
+    <div className=" absolute lg:relative overflow-y-scroll h-full scrollbar-hide z-0 mb-8 mt-28 lg:mt-14">
       <motion.div
         initial={{ y: 800 }}
         animate={{ y: 0 }}
