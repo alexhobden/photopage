@@ -28,7 +28,6 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   overflow: hidden;
   background-color: #585858;
-  height: 100%;
 }
 
 .scrollbar-hide::-webkit-scrollbar {
