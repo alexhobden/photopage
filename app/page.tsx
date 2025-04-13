@@ -45,7 +45,7 @@ export default function Home() {
 
   return (
     <div
-      className="relative lg:pb-0 pb-20 h-full lg:my-auto my-8 w-screen flex lg:gap-8 flex-col lg:flex-row  text-white overflow-hidden"
+      className="relative lg:pb-0 pb-20 h-full lg:my-auto  w-screen flex lg:gap-8 flex-col lg:flex-row  text-white overflow-hidden"
       onMouseMove={handleMouseMove}
     >
       {/* Fullscreen Background Image */}
