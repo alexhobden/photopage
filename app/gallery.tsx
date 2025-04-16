@@ -7,9 +7,16 @@ import { useEffect, useState } from "react";
 type Props = {
   fetchImage: (imageName: string) => void;
   handleResetTimer: () => void;
+  setShowGallery(show: boolean): void;
+  isMobile: boolean;
 };
 
-export default function Gallery({ fetchImage, handleResetTimer }: Props) {
+export default function Gallery({
+  fetchImage,
+  handleResetTimer,
+  setShowGallery,
+  isMobile,
+}: Props) {
   const [images, setImages] = useState<string[]>([]);
   const [isFlipping, setIsFlipping] = useState(false);
 
@@ -20,7 +27,7 @@ export default function Gallery({ fetchImage, handleResetTimer }: Props) {
   }, []);
 
   return (
-    <div className=" absolute lg:relative overflow-y-scroll h-full scrollbar-hide z-0 mb-8 mt-28 lg:mt-14">
+    <div className=" absolute lg:relative overflow-y-scroll h-[50%] lg:h-full scrollbar-hide z-0 mb-8 mt-28 lg:mt-14">
       <motion.div
         initial={{ y: 800 }}
         animate={{ y: 0 }}
@@ -39,6 +46,9 @@ export default function Gallery({ fetchImage, handleResetTimer }: Props) {
             className=" aspect-[2/3] group "
             onClick={() => {
               handleResetTimer();
+              if (isMobile) {
+                setShowGallery(false);
+              }
               setIsFlipping(true);
               fetchImage(src.split("/").pop() || "");
               setTimeout(() => {
