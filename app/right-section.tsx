@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Play, Pause, Shuffle, LayoutGrid } from "lucide-react";
 import Gallery from "./gallery";
-import { div } from "framer-motion/client";
 
 interface Metadata {
   filename: string;
