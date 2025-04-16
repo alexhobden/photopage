@@ -38,7 +38,7 @@ export const MainImage = ({ imageSrc, isGalleryVisible }: Props) => {
               }} // Grow then shrink
               transition={{ duration: 1, ease: "easeInOut" }}
               className={`relative w-full h-full lg:h-full   ${
-                !isGalleryVisible ? "hidden lg:block" : ""
+                isGalleryVisible ? "hidden lg:block" : ""
               }`}
             >
               {displayedImage && (
@@ -47,7 +47,7 @@ export const MainImage = ({ imageSrc, isGalleryVisible }: Props) => {
                   alt="Skull"
                   fill
                   objectFit="contain"
-                  className="bg-blue-500/20 h-min"
+                  className="h-min"
                 />
               )}
             </motion.div>

@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 export default function Home() {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
-  const [isGalleryVisible, setIsGalleryVisible] = useState(true);
+  const [showGallery, setShowGallery] = useState(true);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { clientX, clientY, currentTarget } = e;
@@ -59,13 +59,14 @@ export default function Home() {
 
       {/* Main Image Section */}
       {/* Left Image */}
-      <MainImage imageSrc={imageSrc} isGalleryVisible={isGalleryVisible} />
+      <MainImage imageSrc={imageSrc} isGalleryVisible={showGallery} />
       {/* Right Blurred Section */}
       <RightSection
         title={imageSrc}
         fetchRandomImage={fetchRandomImage}
         fetchImage={fetchImage}
-        setIsGalleryVisible={setIsGalleryVisible}
+        showGallery={showGallery}
+        setShowGallery={setShowGallery}
       />
     </div>
   );
