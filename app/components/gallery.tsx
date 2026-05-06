@@ -17,7 +17,7 @@ export default function Gallery({
   setShowGallery,
   isMobile,
 }: Props) {
-  const [images, setImages] = useState<string[]>([]);
+  const [images, setImages] = useState<{ name: string; url: string }[]>([]);
   const [isFlipping, setIsFlipping] = useState(false);
 
   useEffect(() => {
@@ -35,7 +35,7 @@ export default function Gallery({
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="grid grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 flex-1 w-full px-4 lg:px-16 pt-8 lg:pt-12    gap-6 z-20"
       >
-        {images.map((src, index) => (
+        {images.map((image, index) => (
           <motion.div
             key={index}
             whileHover={{ scale: 1.05 }}
@@ -49,15 +49,16 @@ export default function Gallery({
               if (isMobile) {
                 setShowGallery(false);
               }
+              fetchImage(image.name);
               setIsFlipping(true);
-              fetchImage(src.split("/").pop() || "");
+              fetchImage(image.name);
               setTimeout(() => {
                 setIsFlipping(false);
               }, 1000); // Adjust the timeout to match your animation duration
             }}
           >
             <Image
-              src={src}
+              src={image.url}
               alt={`Gallery ${index}`}
               width={200}
               height={300}

@@ -1,13 +1,14 @@
 "use client";
 
-import { Sidebar } from "./sidebar";
-import { MainImage } from "./main-image";
-import { RightSection } from "./right-section";
-import { ParallaxBackground } from "./background-image";
+import { Sidebar } from "./components/sidebar";
+import { MainImage } from "./components/main-image";
+import { RightSection } from "./components/right-section";
+import { ParallaxBackground } from "./components/background-image";
 import { useEffect, useState } from "react";
 
 export default function Home() {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [imageName, setImageName] = useState<string | null>(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [showGallery, setShowGallery] = useState(true);
 
@@ -31,16 +32,18 @@ export default function Home() {
       .then((data) => console.log("API Response:", data));
     const res = await fetch("/api/randomImage");
     const data = await res.json();
-    if (data.image) setImageSrc(data.image);
+    if (data.url) setImageSrc(data.url);
+    setImageName(data.name);
   };
 
   const fetchImage = async (imageName: string) => {
     const res = await fetch(`/api/gallery/${imageName}`);
     const data = await res.json();
-    if (data.image) {
-      setImageSrc("/gallery/" + data.image);
+    if (data.image && data.image.url) {
+      setImageSrc(data.image.url);
+      setImageName(data.image.name);
     }
-    console.log("Image fetched:", data.image);
+    console.log("Image fetched:", data);
   };
 
   return (
@@ -62,7 +65,7 @@ export default function Home() {
       <MainImage imageSrc={imageSrc} isGalleryVisible={showGallery} />
       {/* Right Blurred Section */}
       <RightSection
-        title={imageSrc}
+        title={imageName}
         fetchRandomImage={fetchRandomImage}
         fetchImage={fetchImage}
         showGallery={showGallery}
