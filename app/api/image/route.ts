@@ -24,6 +24,6 @@ export async function GET(request: Request) {
       headers: { "Content-Type": contentType },
     });
   } catch (error) {
-    return new NextResponse("Image not found", { status: 404 });
+    return new NextResponse("Image not found" + error, { status: 404 });
   }
 }
