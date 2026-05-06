@@ -2526,10 +2526,16 @@ packages:
         integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==,
       }
 
-  next@15.2.8:
+  nested-property@4.0.0:
     resolution:
       {
-        integrity: sha512-pe2trLKZTdaCuvNER0S9Wp+SP2APf7SfFmyUP9/w1SFA2UqmW0u+IsxCKkiky3n6um7mryaQIlgiDnKrf1ZwIw==,
+        integrity: sha512-yFehXNWRs4cM0+dz7QxCd06hTbWbSkV0ISsqBfkntU6TOY4Qm3Q88fRRLOddkGh2Qq6dZvnKVAahfhjcUvLnyA==,
+      }
+
+  next@15.2.3:
+    resolution:
+      {
+        integrity: sha512-x6eDkZxk2rPpu46E1ZVUWIBhYCLszmUY6fvHBFcbzJ9dD+qRX6vcHusaqqDlnY+VngKzKbAiG2iRCkPbmi8f7w==,
       }
     engines: { node: ^18.18.0 || ^19.8.0 || >= 20.0.0 }
     hasBin: true
@@ -4909,7 +4915,9 @@ snapshots:
 
   natural-compare@1.4.0: {}
 
-  next@15.2.8(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+  nested-property@4.0.0: {}
+
+  next@15.2.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
     dependencies:
       "@next/env": 15.2.8
       "@swc/counter": 0.1.3
