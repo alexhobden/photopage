@@ -11,6 +11,7 @@ export default function Home() {
   const [imageName, setImageName] = useState<string | null>(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [showGallery, setShowGallery] = useState(true);
+  const [images, setImages] = useState<{ name: string; url: string }[]>([]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { clientX, clientY, currentTarget } = e;
@@ -23,27 +24,51 @@ export default function Home() {
   };
 
   useEffect(() => {
-    fetchRandomImage();
+    const loadGallery = async () => {
+      const res = await fetch("/api/gallery");
+      const data: { name: string; url: string }[] = await res.json();
+
+      const preloadedImages: { name: string; url: string }[] = [];
+      setImages(preloadedImages); // Start with empty array
+
+      for (const image of data) {
+        try {
+          const imgRes = await fetch(image.url);
+          const blob = await imgRes.blob();
+          const objectURL = URL.createObjectURL(blob);
+          const newImage = { name: image.name, url: objectURL };
+          preloadedImages.push(newImage);
+          setImages([...preloadedImages]); // Update state progressively
+          if (preloadedImages.length === 1) {
+            fetchRandomImage(preloadedImages);
+          }
+        } catch (error) {
+          console.error(`Failed to preload ${image.name}:`, error);
+          // Fallback to original URL if preload fails
+          preloadedImages.push(image);
+          setImages([...preloadedImages]);
+        }
+      }
+    };
+    loadGallery();
   }, []);
 
-  const fetchRandomImage = async () => {
-    fetch("api/randomImage")
-      .then((res) => res.json())
-      .then((data) => console.log("API Response:", data));
-    const res = await fetch("/api/randomImage");
-    const data = await res.json();
-    if (data.url) setImageSrc(data.url);
-    setImageName(data.name);
+  const fetchRandomImage = (
+    galleryImages?: { name: string; url: string }[],
+  ) => {
+    const imgs = galleryImages || images;
+    if (imgs.length === 0) return;
+    const randomImage = imgs[Math.floor(Math.random() * imgs.length)];
+    setImageSrc(randomImage.url);
+    setImageName(randomImage.name);
   };
 
-  const fetchImage = async (imageName: string) => {
-    const res = await fetch(`/api/gallery/${imageName}`);
-    const data = await res.json();
-    if (data.image && data.image.url) {
-      setImageSrc(data.image.url);
-      setImageName(data.image.name);
+  const fetchImage = (imageName: string) => {
+    const image = images.find((img) => img.name === imageName);
+    if (image) {
+      setImageSrc(image.url);
+      setImageName(image.name);
     }
-    console.log("Image fetched:", data);
   };
 
   return (
@@ -66,10 +91,11 @@ export default function Home() {
       {/* Right Blurred Section */}
       <RightSection
         title={imageName}
-        fetchRandomImage={fetchRandomImage}
+        fetchRandomImage={() => fetchRandomImage()}
         fetchImage={fetchImage}
         showGallery={showGallery}
         setShowGallery={setShowGallery}
+        images={images}
       />
     </div>
   );
