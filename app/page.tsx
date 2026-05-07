@@ -23,6 +23,19 @@ export default function Home() {
     setOffset({ x, y });
   };
 
+  const useIsMobile = () => {
+    const [isMobile, setIsMobile] = useState(false);
+    useEffect(() => {
+      const check = () => setIsMobile(window.innerWidth < 1024); // Tailwind's lg is 1024px
+      check();
+      window.addEventListener("resize", check);
+      return () => window.removeEventListener("resize", check);
+    }, []);
+    return isMobile;
+  };
+
+  const isMobile = useIsMobile();
+
   useEffect(() => {
     const loadGallery = async () => {
       const res = await fetch("/api/gallery");
@@ -50,6 +63,7 @@ export default function Home() {
         }
       }
     };
+
     loadGallery();
   }, []);
 
@@ -72,31 +86,66 @@ export default function Home() {
   };
 
   return (
-    <div
-      className="relative lg:pb-0 pb-20 h-full lg:my-auto  w-screen flex lg:gap-8 flex-col lg:flex-row  text-white overflow-hidden"
-      onMouseMove={handleMouseMove}
-    >
-      {/* Fullscreen Background Image */}
-      <ParallaxBackground imageSrc={imageSrc} offset={offset} />
+    <>
+      {isMobile ? (
+        // Mobile view with gallery on top
+        <div
+          className="relative lg:pb-0 pb-20 h-full lg:my-auto  w-screen flex lg:gap-8 flex-col lg:flex-row  text-white overflow-hidden"
+          onMouseMove={handleMouseMove}
+        >
+          {/* Fullscreen Background Image */}
+          <ParallaxBackground imageSrc={imageSrc} offset={offset} />
 
-      {/* Blur Overlay */}
-      <div className="absolute inset-0 bg-black/10 backdrop-blur-[10px]"></div>
+          {/* Blur Overlay */}
+          <div className="absolute inset-0 bg-black/10 backdrop-blur-[10px]"></div>
 
-      {/* Sidebar */}
-      <Sidebar />
+          {/* Sidebar */}
+          <Sidebar />
 
-      {/* Main Image Section */}
-      {/* Left Image */}
-      <MainImage imageSrc={imageSrc} isGalleryVisible={showGallery} />
-      {/* Right Blurred Section */}
-      <RightSection
-        title={imageName}
-        fetchRandomImage={() => fetchRandomImage()}
-        fetchImage={fetchImage}
-        showGallery={showGallery}
-        setShowGallery={setShowGallery}
-        images={images}
-      />
-    </div>
+          {/* Main Image Section */}
+          {/* Left Image */}
+          <MainImage imageSrc={imageSrc} isGalleryVisible={showGallery} />
+          {/* Right Blurred Section */}
+          <RightSection
+            title={imageName}
+            isMobile={isMobile}
+            fetchRandomImage={() => fetchRandomImage()}
+            fetchImage={fetchImage}
+            showGallery={showGallery}
+            setShowGallery={setShowGallery}
+            images={images}
+          />
+        </div>
+      ) : (
+        // Desktop Layout
+        <div
+          className="relative lg:pb-0 pb-20 h-full lg:my-auto  w-screen flex lg:gap-8 flex-col lg:flex-row  text-white overflow-hidden"
+          onMouseMove={handleMouseMove}
+        >
+          {/* Fullscreen Background Image */}
+          <ParallaxBackground imageSrc={imageSrc} offset={offset} />
+
+          {/* Blur Overlay */}
+          <div className="absolute inset-0 bg-black/10 backdrop-blur-[10px]"></div>
+
+          {/* Sidebar */}
+          <Sidebar />
+
+          {/* Main Image Section */}
+          {/* Left Image */}
+          <MainImage imageSrc={imageSrc} isGalleryVisible={showGallery} />
+          {/* Right Blurred Section */}
+          <RightSection
+            title={imageName}
+            isMobile={isMobile}
+            fetchRandomImage={() => fetchRandomImage()}
+            fetchImage={fetchImage}
+            showGallery={showGallery}
+            setShowGallery={setShowGallery}
+            images={images}
+          />
+        </div>
+      )}
+    </>
   );
 }

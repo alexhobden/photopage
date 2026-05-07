@@ -13,6 +13,7 @@ interface Metadata {
 
 type Props = {
   title: string | null;
+  isMobile: boolean;
   duration?: number;
   fetchRandomImage: () => void;
   fetchImage: (imageName: string) => void;
@@ -21,8 +22,14 @@ type Props = {
   images: { name: string; url: string }[];
 };
 
+const randomChar = () => {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  return chars[Math.floor(Math.random() * chars.length)];
+};
+
 export const RightSection = ({
   title,
+  isMobile,
   duration = 2,
   fetchRandomImage,
   fetchImage,
@@ -62,25 +69,12 @@ export const RightSection = ({
     setTimeout(() => setIsShuffleDisabled(false), 1000); // Enable after 1s
   };
 
-  const useIsMobile = () => {
-    const [isMobile, setIsMobile] = useState(false);
-    useEffect(() => {
-      const check = () => setIsMobile(window.innerWidth < 1024); // Tailwind's lg is 1024px
-      check();
-      window.addEventListener("resize", check);
-      return () => window.removeEventListener("resize", check);
-    }, []);
-    return isMobile;
-  };
-
-  const isMobile = useIsMobile();
-
   useEffect(() => {
     const newTitleArray = titleclean.split(""); // Split new title
     setDisplayText(
       Array(newTitleArray.length)
         .fill("")
-        .map(() => randomChar())
+        .map(() => randomChar()),
     );
 
     const interval = 50; // Speed of flickering
@@ -89,8 +83,8 @@ export const RightSection = ({
     const flicker = setInterval(() => {
       setDisplayText((prev) =>
         prev.map((char, i) =>
-          indexesSettled.includes(i) ? newTitleArray[i] : randomChar()
-        )
+          indexesSettled.includes(i) ? newTitleArray[i] : randomChar(),
+        ),
       );
     }, interval);
 
@@ -123,7 +117,7 @@ export const RightSection = ({
 
   useEffect(() => {
     setMatchedMetadata(
-      metadata?.find((m: Metadata) => m.filename === `${titleclean}.jpg`)
+      metadata?.find((m: Metadata) => m.filename === `${titleclean}.jpg`),
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [metadata]);
@@ -178,6 +172,8 @@ export const RightSection = ({
 
   return (
     <>
+      {/* Gallery */}
+      {/* Mobile */}
       {showGallery && isMobile && (
         <Gallery
           handleResetTimer={handleResetTimer}
@@ -187,6 +183,7 @@ export const RightSection = ({
           images={images}
         />
       )}
+      {/* Container */}
       <div className=" relative   flex flex-col lg:justify-end items-center lg:pb-8   h-full w-full lg:w-auto flex-1 font-glasgow z-30">
         <AnimatePresence>
           {showGallery && !isMobile && (
@@ -199,14 +196,18 @@ export const RightSection = ({
             />
           )}
         </AnimatePresence>
-        <div className=" lg:relative -top-20 lg:top-auto absolute flex gap-12 lg:pb-auto pb-4">
+
+        {/* Buttons */}
+        <div className=" lg:static -top-20 lg:top-auto absolute flex gap-12 lg:pb-auto pb-4">
+          {/* Gallery Toggle Button */}
           <button
             onClick={() => {
               setShowGallery(!showGallery);
               handleResetTimer();
             }}
-            className="group "
+            className="group"
           >
+            {/* Casing */}
             <motion.div
               whileHover={{ scale: 1.2 }}
               className="relative flex items-center justify-center w-14 h-14"
@@ -220,6 +221,7 @@ export const RightSection = ({
               </motion.div>
             </motion.div>
           </button>
+          {/* Play/Pause Button */}
           <button
             onClick={() => setIsPlaying((prev) => !prev)}
             className="group "
@@ -235,12 +237,14 @@ export const RightSection = ({
                   <Play className="text-white w-6 h-6 stroke-1.3" />
                 )}
               </motion.div>
+              {/* Casing */}
               <motion.div className="w-14 h-14 absolute group-active:scale-125 transition-transform">
                 <div className="border-white h-5 w-5 border-b-[0.8px] border-l-[0.8px] bottom-0 left-0 absolute"></div>
                 <div className="border-white h-5 w-5 border-t-[0.8px] border-r-[0.8px] top-0 right-0 absolute"></div>
               </motion.div>
             </motion.div>
           </button>
+          {/* Shuffle Button */}
           <button onClick={handleShuffleClick} className="group">
             <motion.div
               whileHover={{ scale: 1.2 }}
@@ -250,7 +254,7 @@ export const RightSection = ({
               <motion.div className="z-10" whileTap={{ scale: 0.9 }}>
                 <Shuffle className="text-white w-6 h-6 stroke-1.3" />
               </motion.div>
-              {/* Corner Borders */}
+              {/* Casing */}
               <motion.div className="w-14 h-14 absolute group-active:scale-125 transition-transform">
                 <div className="border-white h-5 w-5 border-b-[0.8px] border-l-[0.8px] bottom-0 left-0 absolute"></div>
                 <div className="border-white h-5 w-5 border-t-[0.8px] border-r-[0.8px] top-0 right-0 absolute"></div>
@@ -258,45 +262,48 @@ export const RightSection = ({
             </motion.div>
           </button>
         </div>
-        {/* </div> */}
-        <div className="w-[90%] lg:block hidden text-right">
-          <p className="text-[1em] tracking-widest uppercase opacity-90 right-1">
-            {matchedMetadata?.location || "Unknown Location"}
-          </p>
-        </div>
-        <div className="w-[90%] h-[0.8px] bg-white my-2"></div>
-        <div className="w-[90%] flex items-center justify-center lg:h-24 h-14 text-center">
-          <h2
-            ref={titleRef}
-            className="uppercase text-center overflow-hidden tracking-[0.75em] pt-2"
-            style={{ fontSize: `${fontSize}px` }}
-          >
-            {displayText.map((char, i) => (
-              <motion.span
-                key={i}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  delay: (i * duration) / titleclean.length,
-                  duration: 0.3,
-                  ease: "easeOut",
-                }}
-              >
-                {char}
-              </motion.span>
-            ))}
-          </h2>
-        </div>
-        <div className="w-[90%] relative mb-6">
-          <div className="w-6 h-4 border-l-[0.8px] absolute border-b-[0.8px] -top-2 border-white"></div>
-          <div className="w-6 h-4 border-r-[0.8px] absolute right-0 border-b-[0.8px] -top-2 border-white"></div>
+
+        {/* Title */}
+        <div className="w-[90%]">
+          {/* Location */}
+          <div className="w-full lg:block hidden text-right">
+            <p className="text-[1em] tracking-widest uppercase opacity-90 right-1">
+              {matchedMetadata?.location || "Unknown Location"}
+            </p>
+          </div>
+          {/* Line */}
+          <div className="w-full h-[0.8px] bg-white my-2"></div>
+
+          {/* Letters */}
+          <div className="w-full flex items-center justify-center lg:h-24 h-14 text-center">
+            <h2
+              ref={titleRef}
+              className="uppercase text-center overflow-hidden tracking-[0.75em] pt-2"
+              style={{ fontSize: `${fontSize}px` }}
+            >
+              {displayText.map((char, i) => (
+                <motion.span
+                  key={i}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    delay: (i * duration) / titleclean.length,
+                    duration: 0.3,
+                    ease: "easeOut",
+                  }}
+                >
+                  {char}
+                </motion.span>
+              ))}
+            </h2>
+          </div>
+          {/* Casing */}
+          <div className="w-full relative mb-6">
+            <div className="w-6 h-4 border-l-[0.8px] absolute border-b-[0.8px] -top-2 border-white"></div>
+            <div className="w-6 h-4 border-r-[0.8px] absolute right-0 border-b-[0.8px] -top-2 border-white"></div>
+          </div>
         </div>
       </div>
     </>
   );
-};
-
-const randomChar = () => {
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  return chars[Math.floor(Math.random() * chars.length)];
 };
