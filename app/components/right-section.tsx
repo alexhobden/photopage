@@ -184,7 +184,8 @@ export const RightSection = ({
         />
       )}
       {/* Container */}
-      <div className=" relative   flex flex-col lg:justify-end items-center lg:pb-8   h-full w-full lg:w-auto flex-1 font-glasgow z-30">
+      <div className=" relative lg:pt-14 flex flex-col lg:justify-end items-center lg:pb-8   h-full w-full lg:w-auto flex-1 font-glasgow z-30">
+        {/* Gallery */}
         <AnimatePresence>
           {showGallery && !isMobile && (
             <Gallery

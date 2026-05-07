@@ -22,13 +22,13 @@ export default function Gallery({
   const [isFlipping, setIsFlipping] = useState(false);
 
   return (
-    <div className=" absolute lg:relative overflow-y-scroll h-[50%] lg:h-full scrollbar-hide z-0 mb-8 mt-28 lg:mt-0">
+    <div className=" absolute lg:relative overflow-y-scroll h-[50%] lg:h-full scrollbar-hide z-0 mb-8 mt-28 lg:mt-auto">
       <motion.div
         initial={{ y: 800 }}
         animate={{ y: 0 }}
         exit={{ y: 1200 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="grid grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 flex-1 w-full px-4 lg:px-16 pt-8 lg:pt-12    gap-6 z-20"
+        className="grid grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 flex-1 w-full px-4 lg:px-16 pt-8 lg:pt-auto lg:pt-0    gap-6 z-20"
       >
         {/* Pictures */}
         {images.map((image, index) => (
