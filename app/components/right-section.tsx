@@ -18,6 +18,7 @@ type Props = {
   fetchImage: (imageName: string) => void;
   showGallery: boolean;
   setShowGallery: (visible: boolean) => void;
+  images: { name: string; url: string }[];
 };
 
 export const RightSection = ({
@@ -27,6 +28,7 @@ export const RightSection = ({
   fetchImage,
   showGallery,
   setShowGallery,
+  images,
 }: Props) => {
   let titleclean = "";
   if (title) {
@@ -182,6 +184,7 @@ export const RightSection = ({
           fetchImage={fetchImage}
           setShowGallery={setShowGallery}
           isMobile={isMobile}
+          images={images}
         />
       )}
       <div className=" relative   flex flex-col lg:justify-end items-center lg:pb-8   h-full w-full lg:w-auto flex-1 font-glasgow z-30">
@@ -192,6 +195,7 @@ export const RightSection = ({
               fetchImage={fetchImage}
               setShowGallery={setShowGallery}
               isMobile={isMobile}
+              images={images}
             />
           )}
         </AnimatePresence>

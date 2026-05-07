@@ -9,6 +9,7 @@ type Props = {
   handleResetTimer: () => void;
   setShowGallery(show: boolean): void;
   isMobile: boolean;
+  images: { name: string; url: string }[];
 };
 
 export default function Gallery({
@@ -16,15 +17,9 @@ export default function Gallery({
   handleResetTimer,
   setShowGallery,
   isMobile,
+  images,
 }: Props) {
-  const [images, setImages] = useState<{ name: string; url: string }[]>([]);
   const [isFlipping, setIsFlipping] = useState(false);
-
-  useEffect(() => {
-    fetch("/api/gallery")
-      .then((res) => res.json())
-      .then((data) => setImages(data));
-  }, []);
 
   return (
     <div className=" absolute lg:relative overflow-y-scroll h-[50%] lg:h-full scrollbar-hide z-0 mb-8 mt-28 lg:mt-14">
