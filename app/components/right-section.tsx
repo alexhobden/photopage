@@ -184,16 +184,27 @@ export const RightSection = ({
         />
       )}
       {/* Container */}
-      <div className=" relative   flex flex-col lg:justify-end items-center lg:pb-8   h-full w-full lg:w-auto flex-1 font-glasgow z-30">
+      <div className=" relative lg:pt-14 flex flex-col overflow-x-visible lg:justify-end items-center w-full lg:pb-8 lg:pr-4  h-full  lg:w-auto flex-1 font-glasgow z-30">
+        {/* Gallery */}
         <AnimatePresence>
           {showGallery && !isMobile && (
-            <Gallery
-              handleResetTimer={handleResetTimer}
-              fetchImage={fetchImage}
-              setShowGallery={setShowGallery}
-              isMobile={isMobile}
-              images={images}
-            />
+            <div className="h-full flex flex-col items-center relative overflow-y-scroll scrollbar-hide mb-8 w-full  py-1 ">
+              <Gallery
+                handleResetTimer={handleResetTimer}
+                fetchImage={fetchImage}
+                setShowGallery={setShowGallery}
+                isMobile={isMobile}
+                images={images}
+              />
+              <motion.div
+                initial={{ scaleX: 0, opacity: 0 }}
+                animate={{ scaleX: 1, opacity: 1 }}
+                exit={{ scaleX: 0, opacity: 0 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                style={{ originX: 0.5 }} // Ensures the expansion starts from the middle
+                className="w-[90%]    absolute  border-b-[0.8px] -bottom-0 border-white"
+              ></motion.div>
+            </div>
           )}
         </AnimatePresence>
 

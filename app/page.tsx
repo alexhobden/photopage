@@ -103,9 +103,8 @@ export default function Home() {
           <Sidebar />
 
           {/* Main Image Section */}
-          {/* Left Image */}
           <MainImage imageSrc={imageSrc} isGalleryVisible={showGallery} />
-          {/* Right Blurred Section */}
+          {/* Right Section */}
           <RightSection
             title={imageName}
             isMobile={isMobile}
@@ -132,9 +131,8 @@ export default function Home() {
           <Sidebar />
 
           {/* Main Image Section */}
-          {/* Left Image */}
           <MainImage imageSrc={imageSrc} isGalleryVisible={showGallery} />
-          {/* Right Blurred Section */}
+          {/* Right Section */}
           <RightSection
             title={imageName}
             isMobile={isMobile}
