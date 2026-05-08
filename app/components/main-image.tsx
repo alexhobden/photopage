@@ -7,9 +7,14 @@ import { useEffect, useState } from "react";
 type Props = {
   imageSrc: string | null;
   isGalleryVisible: boolean;
+  onImageLoad?: () => void;
 };
 
-export const MainImage = ({ imageSrc, isGalleryVisible }: Props) => {
+export const MainImage = ({
+  imageSrc,
+  isGalleryVisible,
+  onImageLoad,
+}: Props) => {
   const [displayedImage, setDisplayedImage] = useState(imageSrc);
   const [isFlipping, setIsFlipping] = useState(false); // Track animation state
 
@@ -48,6 +53,7 @@ export const MainImage = ({ imageSrc, isGalleryVisible }: Props) => {
                   fill
                   objectFit="contain"
                   className="h-min"
+                  onLoadingComplete={() => onImageLoad?.()}
                 />
               )}
             </motion.div>

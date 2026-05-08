@@ -4,14 +4,19 @@ import { Sidebar } from "./components/sidebar";
 import { MainImage } from "./components/main-image";
 import { RightSection } from "./components/right-section";
 import { ParallaxBackground } from "./components/background-image";
+import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
+import Spinner from "./components/utils/spinner";
 
 export default function Home() {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [imageName, setImageName] = useState<string | null>(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
-  const [showGallery, setShowGallery] = useState(true);
+  const [showGallery, setShowGallery] = useState(false);
   const [images, setImages] = useState<{ name: string; url: string }[]>([]);
+  const [showLoadingScreen, setShowLoadingScreen] = useState(true);
+  const [isFirstImageLoaded, setIsFirstImageLoaded] = useState(false);
+  const [showLoadingIcon, setShowLoadingIcon] = useState(true);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { clientX, clientY, currentTarget } = e;
@@ -77,6 +82,14 @@ export default function Home() {
     setImageName(randomImage.name);
   };
 
+  const handleImageLoaded = () => {
+    if (!isFirstImageLoaded) {
+      setIsFirstImageLoaded(true);
+      setShowLoadingIcon(false);
+      setTimeout(() => setShowLoadingScreen(false), 200);
+    }
+  };
+
   const fetchImage = (imageName: string) => {
     const image = images.find((img) => img.name === imageName);
     if (image) {
@@ -103,7 +116,11 @@ export default function Home() {
           <Sidebar />
 
           {/* Main Image Section */}
-          <MainImage imageSrc={imageSrc} isGalleryVisible={showGallery} />
+          <MainImage
+            imageSrc={imageSrc}
+            isGalleryVisible={showGallery}
+            onImageLoad={handleImageLoaded}
+          />
           {/* Right Section */}
           <RightSection
             title={imageName}
@@ -131,7 +148,11 @@ export default function Home() {
           <Sidebar />
 
           {/* Main Image Section */}
-          <MainImage imageSrc={imageSrc} isGalleryVisible={showGallery} />
+          <MainImage
+            imageSrc={imageSrc}
+            isGalleryVisible={showGallery}
+            onImageLoad={handleImageLoaded}
+          />
           {/* Right Section */}
           <RightSection
             title={imageName}
@@ -144,6 +165,19 @@ export default function Home() {
           />
         </div>
       )}
+      <AnimatePresence>
+        {showLoadingScreen && (
+          <motion.div
+            key="loading-overlay"
+            initial={{ opacity: 1 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/95"
+          ></motion.div>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>{showLoadingIcon && <Spinner />}</AnimatePresence>
     </>
   );
 }
