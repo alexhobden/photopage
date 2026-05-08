@@ -17,8 +17,8 @@ export default function Home() {
     const { clientX, clientY, currentTarget } = e;
     const { width, height } = currentTarget.getBoundingClientRect();
 
-    const x = (clientX / width - 0.5) * -10; // Adjust strength of parallax
-    const y = (clientY / height - 0.5) * -10;
+    const x = (clientX / width - 0.5) * -15; // Adjust strength of parallax
+    const y = (clientY / height - 0.5) * -15;
 
     setOffset({ x, y });
   };
