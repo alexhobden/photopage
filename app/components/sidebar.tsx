@@ -1,6 +1,6 @@
 export const Sidebar = () => {
   return (
-    <div className="w-full lg:w-1/5 font-glasgow  p-4">
+    <div className="w-full lg:w-1/5 font-glasgow pl-4  pt-12 flex flex-col items-center">
       <div>
         <div className="relative ">
           <h1 className="lg:text-[1.75em] font-light text-center tracking-[0.75em]">
@@ -15,7 +15,7 @@ export const Sidebar = () => {
         <div className="w-full border-t border-white opacity-70 my-2"></div>
         <div className="hidden lg:block">
           <p className="text-xl text-center uppercase tracking-[0.75em] opacity-70">
-            Collections
+            PHOTOGRAPHY
           </p>
         </div>
       </div>
