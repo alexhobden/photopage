@@ -116,11 +116,12 @@ export const RightSection = ({
   }, [title, duration]);
 
   useEffect(() => {
+    console.log("IVE BEEN CALLED");
     setFontSize(64);
     const adjustFontSize = () => {
       if (!titleRef.current) return;
 
-      let size = fontSize;
+      let size = 64;
       const element = titleRef.current;
       element.style.fontSize = `${size}px`; // Apply initial size
 
@@ -136,7 +137,7 @@ export const RightSection = ({
     window.addEventListener("resize", adjustFontSize);
     return () => window.removeEventListener("resize", adjustFontSize);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [displayText]);
+  }, [displayText, titleclean]);
   useEffect(() => {
     fetchRandomImage();
   }, []);
@@ -285,7 +286,7 @@ export const RightSection = ({
           <div className="w-full flex items-center justify-center lg:h-24 h-14 text-center">
             <h2
               ref={titleRef}
-              className="uppercase text-center overflow-hidden tracking-[0.75em] pt-2"
+              className="uppercase white-space-nowrap text-center overflow-hidden tracking-[0.75em] pl-6 pt-2"
               style={{ fontSize: `${fontSize}px` }}
             >
               {displayText.map((char, i) => (
@@ -298,6 +299,7 @@ export const RightSection = ({
                     duration: 0.3,
                     ease: "easeOut",
                   }}
+                  className="whitespace-nowrap text-center"
                 >
                   {char}
                 </motion.span>
