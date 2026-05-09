@@ -23,7 +23,7 @@ export async function GET() {
       )
       .map((item) => ({
         name: item.basename,
-        url: `/api/image?path=${encodeURIComponent(item.filename)}`,
+        url: `/api/image?path=${encodeURIComponent(item.filename)}&format=webp`,
       }));
 
     if (images.length === 0) {

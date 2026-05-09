@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Alex Hobden Collections",
-  description: "Image Gallery of me",
+  title: "Alex Hobden Photography",
+  description: "Animal photography by Alex Hobden",
 };
 
 export default function RootLayout({

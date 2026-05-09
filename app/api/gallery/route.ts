@@ -25,7 +25,7 @@ export async function GET() {
       .map((item) => ({
         name: item.basename,
         // Wir schicken dem Frontend einen Link zu unserer eigenen Proxy-Route
-        url: `/api/image?path=${encodeURIComponent(item.filename)}`,
+        url: `/api/image?path=${encodeURIComponent(item.filename)}&format=webp`,
       }));
 
     return NextResponse.json(images);

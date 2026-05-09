@@ -5,12 +5,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Play, Pause, Shuffle, LayoutGrid } from "lucide-react";
 import Gallery from "./gallery";
 
-interface Metadata {
-  filename: string;
-  location?: string;
-  [key: string]: unknown; // For additional properties if needed
-}
-
 type Props = {
   title: string | null;
   isMobile: boolean;
@@ -37,9 +31,22 @@ export const RightSection = ({
   setShowGallery,
   images,
 }: Props) => {
+  let location = "";
   let titleclean = "";
   if (title) {
-    titleclean = title ? title.split("/").pop()?.split(".")[0] || "" : "";
+    titleclean = title
+      ? title
+          .split("/")
+          .pop()
+          ?.split(".")[0]
+          .split("_")[0]
+          ?.replace("-", " ") || ""
+      : "";
+    location = title
+      ? title.split("_")[1]?.replace("-", " ") +
+        ", " +
+        title.split("_")[2]?.split(".")[0]?.replace("-", " ")
+      : "";
   }
   const titleRef = useRef<HTMLHeadingElement>(null);
   const [fontSize, setFontSize] = useState(64); // Default in px
@@ -48,16 +55,6 @@ export const RightSection = ({
   const [resetTimer, setResetTimer] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [isShuffleDisabled, setIsShuffleDisabled] = useState(false);
-  const [metadata, setMetadata] = useState<Metadata[]>([
-    {
-      filename: "",
-      location: "",
-    },
-  ]); // Adjust type as needed
-  const [matchedMetadata, setMatchedMetadata] = useState<Metadata | undefined>({
-    filename: "",
-    location: "",
-  }); // Adjust type as needed
 
   const handleShuffleClick = () => {
     if (isShuffleDisabled) return; // Prevent double-clicks
@@ -102,10 +99,7 @@ export const RightSection = ({
       setDisplayText(newTitleArray);
       clearInterval(flicker);
     }, duration * 1000);
-    fetch("/meta/gallery.json")
-      .then((res) => res.json())
-      .then((data) => setMetadata(data));
-    console.log("Metadata fetched:", metadata);
+    fetch("/meta/gallery.json").then((res) => res.json());
 
     return () => {
       clearInterval(flicker);
@@ -116,18 +110,12 @@ export const RightSection = ({
   }, [title, duration]);
 
   useEffect(() => {
-    setMatchedMetadata(
-      metadata?.find((m: Metadata) => m.filename === `${titleclean}.jpg`),
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [metadata]);
-
-  useEffect(() => {
+    console.log("IVE BEEN CALLED");
     setFontSize(64);
     const adjustFontSize = () => {
       if (!titleRef.current) return;
 
-      let size = fontSize;
+      let size = 64;
       const element = titleRef.current;
       element.style.fontSize = `${size}px`; // Apply initial size
 
@@ -143,7 +131,10 @@ export const RightSection = ({
     window.addEventListener("resize", adjustFontSize);
     return () => window.removeEventListener("resize", adjustFontSize);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [displayText]);
+  }, [displayText, titleclean]);
+  useEffect(() => {
+    fetchRandomImage();
+  }, []);
 
   useEffect(() => {
     if (!isPlaying) return;
@@ -279,7 +270,7 @@ export const RightSection = ({
           {/* Location */}
           <div className="w-full lg:block hidden text-right">
             <p className="text-[1em] tracking-widest uppercase opacity-90 right-1">
-              {matchedMetadata?.location || "Unknown Location"}
+              {location || "Unknown Location"}
             </p>
           </div>
           {/* Line */}
@@ -289,7 +280,7 @@ export const RightSection = ({
           <div className="w-full flex items-center justify-center lg:h-24 h-14 text-center">
             <h2
               ref={titleRef}
-              className="uppercase text-center overflow-hidden tracking-[0.75em] pt-2"
+              className="uppercase white-space-nowrap text-center overflow-hidden tracking-[0.75em] pl-6 pt-2"
               style={{ fontSize: `${fontSize}px` }}
             >
               {displayText.map((char, i) => (
@@ -302,6 +293,7 @@ export const RightSection = ({
                     duration: 0.3,
                     ease: "easeOut",
                   }}
+                  className="whitespace-nowrap text-center"
                 >
                   {char}
                 </motion.span>
