@@ -5,12 +5,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Play, Pause, Shuffle, LayoutGrid } from "lucide-react";
 import Gallery from "./gallery";
 
-interface Metadata {
-  filename: string;
-  location?: string;
-  [key: string]: unknown; // For additional properties if needed
-}
-
 type Props = {
   title: string | null;
   isMobile: boolean;
