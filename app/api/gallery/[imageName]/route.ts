@@ -7,7 +7,7 @@ export async function GET(
   const { imageName } = await params;
 
   // Construct the public image URL
-  const imageUrl = `/api/image?path=${encodeURIComponent(`/users/alexhobden/Webseite/${imageName}`)}`;
+  const imageUrl = `/api/image?path=${encodeURIComponent(`/users/alexhobden/Webseite/toWEBP/${imageName}`)}`;
 
   // Return the URL (or a 404 if needed)
   return NextResponse.json({ image: { name: imageName, url: imageUrl } });
