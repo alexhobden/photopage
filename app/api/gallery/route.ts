@@ -12,7 +12,7 @@ export async function GET() {
     // 2. Inhalt eines bestimmten Ordners auslesen (z.B. /public/bilder)
     // Achte auf den korrekten Pfad in deinem HiDrive
     const directoryItems = await client.getDirectoryContents(
-      "/users/alexhobden/Webseite",
+      "/users/alexhobden/Webseite/toWEBP/",
     );
     console.log(directoryItems.map((i) => i.filename));
 
@@ -25,7 +25,7 @@ export async function GET() {
       .map((item) => ({
         name: item.basename,
         // Wir schicken dem Frontend einen Link zu unserer eigenen Proxy-Route
-        url: `/api/image?path=${encodeURIComponent(item.filename)}&format=webp`,
+        url: `/api/image?path=${encodeURIComponent(item.filename)}`,
       }));
 
     return NextResponse.json(images);
