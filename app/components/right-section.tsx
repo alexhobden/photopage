@@ -99,7 +99,6 @@ export const RightSection = ({
       setDisplayText(newTitleArray);
       clearInterval(flicker);
     }, duration * 1000);
-    fetch("/meta/gallery.json").then((res) => res.json());
 
     return () => {
       clearInterval(flicker);
@@ -175,7 +174,7 @@ export const RightSection = ({
         />
       )}
       {/* Container */}
-      <div className=" relative lg:pt-14 flex flex-col overflow-x-visible lg:justify-end items-center w-full lg:pb-8 lg:pr-4  h-full  lg:w-auto flex-1 font-glasgow z-30">
+      <div className=" relative lg:pt-14 min-w-0 flex flex-col overflow-x-visible lg:justify-end items-center w-full lg:pb-8 lg:pr-4  h-full  lg:w-0 flex-1 font-glasgow z-30">
         {/* Gallery */}
         <AnimatePresence>
           {showGallery && !isMobile && (
@@ -280,7 +279,7 @@ export const RightSection = ({
           <div className="w-full flex items-center justify-center lg:h-24 h-14 text-center">
             <h2
               ref={titleRef}
-              className="uppercase white-space-nowrap text-center overflow-hidden tracking-[0.75em] pl-6 pt-2"
+              className="uppercase whitespace-nowrap text-center overflow-hidden tracking-[0.75em] pl-6 pt-2"
               style={{ fontSize: `${fontSize}px` }}
             >
               {displayText.map((char, i) => (
