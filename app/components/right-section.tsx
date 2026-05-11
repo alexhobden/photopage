@@ -114,7 +114,7 @@ export const RightSection = ({
     const adjustFontSize = () => {
       if (!titleRef.current) return;
 
-      let size = 64;
+      let size = 12;
       const element = titleRef.current;
       element.style.fontSize = `${size}px`; // Apply initial size
 
