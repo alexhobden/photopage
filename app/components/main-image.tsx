@@ -30,8 +30,8 @@ export const MainImage = ({
   }, [imageSrc]);
 
   return (
-    <div className="lg:h-full flex-1 lg:flex-none lg:w-fit px-4 flex flex-col justify-center lg:flex-shrink-0">
-      <motion.div className=" relative h-fit  lg:top-auto lg:h-[calc(100%-112px)] aspect-[2/3]">
+    <div className="lg:h-full flex-1 min-h-0 lg:flex-none lg:w-fit px-4 flex flex-col justify-center lg:flex-shrink-0">
+      <motion.div className=" relative h-full max-h-full lg:max-h-auto  lg:top-auto lg:h-[calc(100%-112px)] aspect-[2/3]">
         {imageSrc && (
           <>
             <motion.div
