@@ -6,10 +6,10 @@ export const Sidebar = () => {
       {/* Title */}
       <div>
         <div className="relative ">
-          <h1 className="xl:text-3xl lg:text-2xl font-light text-center tracking-[0.75em]">
+          <h1 className="lg:text-2xl font-light text-center tracking-[0.75em] pl-2">
             ALEX
           </h1>
-          <h1 className="xl:text-3xl lg:text-2xl font-light text-center tracking-[0.75em]">
+          <h1 className="lg:text-2xl font-light text-center tracking-[0.75em] pl-2">
             HOBDEN
           </h1>
           <div className="border-white h-4 w-4 border-b-[0.8px] border-l-[0.8px] bottom-0  absolute"></div>
@@ -17,7 +17,7 @@ export const Sidebar = () => {
         </div>
         <div className="w-full border-t border-white opacity-70 my-2"></div>
         <div className="hidden text-center lg:block">
-          <p className="text-xl text-center uppercase tracking-[0.75em] opacity-70">
+          <p className="text-xl text-center uppercase tracking-[0.75em] opacity-70 pl-2">
             PHOTOGRAPHY
           </p>
         </div>

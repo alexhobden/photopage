@@ -146,7 +146,7 @@ export const RightSection = ({
     // Start a new one
     intervalRef.current = setInterval(() => {
       fetchRandomImage();
-    }, 7000);
+    }, 6000);
 
     // Clear on unmount
     return () => {
