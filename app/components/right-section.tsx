@@ -175,7 +175,7 @@ export const RightSection = ({
       )}
       {/* Container */}
 
-      <div className=" relative lg:pt-14 min-w-0 flex flex-col overflow-x-visible lg:justify-end items-center w-full lg:pb-8 lg:pr-4  h-full  lg:w-0 flex-1 font-glasgow z-30">
+      <div className=" relative lg:pt-14 min-w-0 flex flex-col overflow-x-visible lg:justify-end items-center w-full lg:pb-8 lg:pr-4  lg:h-full  lg:w-0 lg:flex-1 font-glasgow z-30">
         {/* Gallery */}
         <AnimatePresence>
           {showGallery && !isMobile && (
