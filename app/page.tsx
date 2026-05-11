@@ -57,15 +57,23 @@ export default function Home() {
           const newImage = { name: image.name, url: objectURL };
           preloadedImages.push(newImage);
           setImages([...preloadedImages]); // Update state progressively
-          if (preloadedImages.length === 1) {
-            fetchRandomImage(preloadedImages);
-          }
         } catch (error) {
           console.error(`Failed to preload ${image.name}:`, error);
           // Fallback to original URL if preload fails
           preloadedImages.push(image);
           setImages([...preloadedImages]);
         }
+      }
+
+      // Set the specific initial image
+      const specificImage = preloadedImages.find(
+        (img) => img.name === "little-owl_swabian_alb_germany_1.webp",
+      );
+      if (specificImage) {
+        setImageSrc(specificImage.url);
+        setImageName(specificImage.name);
+      } else {
+        fetchRandomImage(preloadedImages);
       }
     };
 
