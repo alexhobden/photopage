@@ -2,14 +2,14 @@ import { motion } from "framer-motion";
 
 export const Sidebar = () => {
   return (
-    <div className="w-full lg:w-1/5 font-glasgow pl-4  pt-12 flex flex-col gap-4 items-center">
+    <div className="w-full lg:w-fit font-glasgow pl-4  pt-12 flex flex-col gap-4 items-center">
       {/* Title */}
       <div>
         <div className="relative ">
-          <h1 className="lg:text-[1.75em] font-light text-center tracking-[0.75em]">
+          <h1 className="xl:text-3xl lg:text-2xl font-light text-center tracking-[0.75em]">
             ALEX
           </h1>
-          <h1 className="lg:text-[1.75em] font-light text-center tracking-[0.75em]">
+          <h1 className="xl:text-3xl lg:text-2xl font-light text-center tracking-[0.75em]">
             HOBDEN
           </h1>
           <div className="border-white h-4 w-4 border-b-[0.8px] border-l-[0.8px] bottom-0  absolute"></div>
