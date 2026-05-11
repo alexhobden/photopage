@@ -12,6 +12,14 @@ type Props = {
 export const ParallaxBackground = ({ imageSrc, offset }: Props) => {
   const [prevImage, setPrevImage] = useState<string | null>(null);
   const [currentImage, setCurrentImage] = useState<string | null>(imageSrc);
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsLargeScreen(window.innerWidth >= 1024);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   useEffect(() => {
     if (imageSrc && imageSrc !== currentImage) {
@@ -21,14 +29,19 @@ export const ParallaxBackground = ({ imageSrc, offset }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageSrc]);
 
+  const width = isLargeScreen ? "120vw" : "250vw";
+  const height = isLargeScreen ? "120vh" : "250vh";
+  const offsetTop = isLargeScreen ? "-10vh" : "-25vh";
+  const offsetLeft = isLargeScreen ? "-10vw" : "-75vw";
+
   return (
     <motion.div
-      className="absolute overflow-hidden"
+      className="absolute overflow-hidden z-0"
       style={{
-        width: "120vw",
-        height: "120vh",
-        left: "-10vw",
-        top: "-10vh",
+        width: width,
+        height: height,
+        left: offsetLeft,
+        top: offsetTop,
         transform: `translate(${offset.x}px, ${offset.y}px)`,
         transition: "transform 0.1s linear",
       }}

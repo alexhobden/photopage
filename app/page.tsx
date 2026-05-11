@@ -7,6 +7,7 @@ import { ParallaxBackground } from "./components/background-image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import Spinner from "./components/utils/spinner";
+import MobileMenu from "./components/mobile-menu";
 
 export default function Home() {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -110,35 +111,40 @@ export default function Home() {
     <>
       {isMobile ? (
         // Mobile view with gallery on top
-        <div
-          className="relative  h-[100dvh] lg:my-auto  w-screen flex lg:gap-8 flex-col lg:flex-row  text-white overflow-hidden"
-          onMouseMove={handleMouseMove}
-        >
-          {/* Fullscreen Background Image */}
+        <div className=" relative snap-y snap-mandatory h-dvh overflow-y-scroll">
           <ParallaxBackground imageSrc={imageSrc} offset={offset} />
 
           {/* Blur Overlay */}
-          <div className="absolute inset-0 bg-black/10 backdrop-blur-[10px]"></div>
+          <div className="absolute h-[250vh] z-0 w-full bg-black/10 backdrop-blur-[10px]"></div>
+          <div
+            className="relative snap-start h-[100dvh] lg:my-auto  w-screen flex lg:gap-8 flex-col lg:flex-row  text-white overflow-hidden"
+            onMouseMove={handleMouseMove}
+          >
+            {/* Fullscreen Background Image */}
 
-          {/* Sidebar */}
-          <Sidebar isMobile={isMobile} />
+            {/* Sidebar */}
+            <Sidebar isMobile={isMobile} />
 
-          {/* Main Image Section */}
-          <MainImage
-            imageSrc={imageSrc}
-            isGalleryVisible={showGallery}
-            onImageLoad={handleImageLoaded}
-          />
-          {/* Right Section */}
-          <RightSection
-            title={imageName}
-            isMobile={isMobile}
-            fetchRandomImage={() => fetchRandomImage()}
-            fetchImage={fetchImage}
-            showGallery={showGallery}
-            setShowGallery={setShowGallery}
-            images={images}
-          />
+            {/* Main Image Section */}
+            <MainImage
+              imageSrc={imageSrc}
+              isGalleryVisible={showGallery}
+              onImageLoad={handleImageLoaded}
+            />
+            {/* Right Section */}
+            <RightSection
+              title={imageName}
+              isMobile={isMobile}
+              fetchRandomImage={() => fetchRandomImage()}
+              fetchImage={fetchImage}
+              showGallery={showGallery}
+              setShowGallery={setShowGallery}
+              images={images}
+            />
+          </div>
+          <div className="snap-start z-50 relative">
+            <MobileMenu></MobileMenu>
+          </div>
         </div>
       ) : (
         // Desktop Layout
