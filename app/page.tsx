@@ -103,7 +103,7 @@ export default function Home() {
       {isMobile ? (
         // Mobile view with gallery on top
         <div
-          className="relative lg:pb-0 pb-20 h-[100dvh] lg:my-auto  w-screen flex lg:gap-8 flex-col lg:flex-row  text-white overflow-hidden"
+          className="relative  h-[100dvh] lg:my-auto  w-screen flex lg:gap-8 flex-col lg:flex-row  text-white overflow-hidden"
           onMouseMove={handleMouseMove}
         >
           {/* Fullscreen Background Image */}
@@ -113,7 +113,7 @@ export default function Home() {
           <div className="absolute inset-0 bg-black/10 backdrop-blur-[10px]"></div>
 
           {/* Sidebar */}
-          <Sidebar />
+          <Sidebar isMobile={isMobile} />
 
           {/* Main Image Section */}
           <MainImage
@@ -145,7 +145,7 @@ export default function Home() {
           <div className="absolute inset-0 bg-black/10 backdrop-blur-[10px]"></div>
 
           {/* Sidebar */}
-          <Sidebar />
+          <Sidebar isMobile={isMobile} />
 
           {/* Main Image Section */}
           <MainImage

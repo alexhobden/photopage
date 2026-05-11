@@ -30,7 +30,7 @@ export const MainImage = ({
   }, [imageSrc]);
 
   return (
-    <div className="lg:h-full flex-1 lg:flex-none w-fit px-4 flex flex-col justify-center flex-shrink-0">
+    <div className="lg:h-full flex-1 lg:flex-none lg:w-fit px-4 flex flex-col justify-center lg:flex-shrink-0">
       <motion.div className=" relative h-fit  lg:top-auto lg:h-[calc(100%-112px)] aspect-[2/3]">
         {imageSrc && (
           <>
