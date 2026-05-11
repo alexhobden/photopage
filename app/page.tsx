@@ -111,16 +111,16 @@ export default function Home() {
     <>
       {isMobile ? (
         // Mobile view with gallery on top
-        <>
+        <div className=" relative snap-y snap-mandatory h-dvh overflow-y-scroll">
+          <ParallaxBackground imageSrc={imageSrc} offset={offset} />
+
+          {/* Blur Overlay */}
+          <div className="absolute h-[250vh] z-0 w-full bg-black/10 backdrop-blur-[10px]"></div>
           <div
-            className="relative  h-[100dvh] lg:my-auto  w-screen flex lg:gap-8 flex-col lg:flex-row  text-white overflow-hidden"
+            className="relative snap-start h-[100dvh] lg:my-auto  w-screen flex lg:gap-8 flex-col lg:flex-row  text-white overflow-hidden"
             onMouseMove={handleMouseMove}
           >
             {/* Fullscreen Background Image */}
-            <ParallaxBackground imageSrc={imageSrc} offset={offset} />
-
-            {/* Blur Overlay */}
-            <div className="absolute inset-0 bg-black/10 backdrop-blur-[10px]"></div>
 
             {/* Sidebar */}
             <Sidebar isMobile={isMobile} />
@@ -142,8 +142,10 @@ export default function Home() {
               images={images}
             />
           </div>
-          <MobileMenu></MobileMenu>
-        </>
+          <div className="snap-start z-50 relative">
+            <MobileMenu></MobileMenu>
+          </div>
+        </div>
       ) : (
         // Desktop Layout
         <div

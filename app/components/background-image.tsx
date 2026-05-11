@@ -29,17 +29,19 @@ export const ParallaxBackground = ({ imageSrc, offset }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageSrc]);
 
-  const width = isLargeScreen ? "120vw" : "200vw";
-  const height = isLargeScreen ? "120vh" : "200vh";
+  const width = isLargeScreen ? "120vw" : "250vw";
+  const height = isLargeScreen ? "120vh" : "250vh";
+  const offsetTop = isLargeScreen ? "-10vh" : "-25vh";
+  const offsetLeft = isLargeScreen ? "-10vw" : "-75vw";
 
   return (
     <motion.div
-      className="absolute overflow-hidden"
+      className="absolute overflow-hidden z-0"
       style={{
         width: width,
         height: height,
-        left: "-10vw",
-        top: "-10vh",
+        left: offsetLeft,
+        top: offsetTop,
         transform: `translate(${offset.x}px, ${offset.y}px)`,
         transition: "transform 0.1s linear",
       }}
