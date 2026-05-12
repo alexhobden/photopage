@@ -10,14 +10,18 @@ import Spinner from "./components/utils/spinner";
 import MobileMenu from "./components/mobile-menu";
 
 export default function Home() {
-  const [imageSrc, setImageSrc] = useState<string | null>(null);
-  const [imageName, setImageName] = useState<string | null>(null);
+  const initialImageName = "little-owl_swabian-alb_germany_1.webp";
+  const initialImageSrc = `/pictures/${initialImageName}`;
+
+  const [imageSrc, setImageSrc] = useState<string | null>(initialImageSrc);
+  const [imageName, setImageName] = useState<string | null>(initialImageName);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [showGallery, setShowGallery] = useState(false);
   const [images, setImages] = useState<{ name: string; url: string }[]>([]);
   const [showLoadingScreen, setShowLoadingScreen] = useState(true);
   const [isFirstImageLoaded, setIsFirstImageLoaded] = useState(false);
   const [showLoadingIcon, setShowLoadingIcon] = useState(true);
+  const [startPlaying, setStartPlaying] = useState(false);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { clientX, clientY, currentTarget } = e;
@@ -58,6 +62,9 @@ export default function Home() {
           const newImage = { name: image.name, url: objectURL };
           preloadedImages.push(newImage);
           setImages([...preloadedImages]); // Update state progressively
+          if (preloadedImages.length === 10) {
+            setStartPlaying(true); // Start slideshow after first image is loaded
+          }
         } catch (error) {
           console.error(`Failed to preload ${image.name}:`, error);
           // Fallback to original URL if preload fails
@@ -65,26 +72,13 @@ export default function Home() {
           setImages([...preloadedImages]);
         }
       }
-
-      // Set the specific initial image
-      const specificImage = preloadedImages.find(
-        (img) => img.name === "little-owl_swabian_alb_germany_1.webp",
-      );
-      if (specificImage) {
-        setImageSrc(specificImage.url);
-        setImageName(specificImage.name);
-      } else {
-        fetchRandomImage(preloadedImages);
-      }
     };
 
     loadGallery();
   }, []);
 
-  const fetchRandomImage = (
-    galleryImages?: { name: string; url: string }[],
-  ) => {
-    const imgs = galleryImages || images;
+  const fetchRandomImage = () => {
+    const imgs = images;
     if (imgs.length === 0) return;
     const randomImage = imgs[Math.floor(Math.random() * imgs.length)];
     setImageSrc(randomImage.url);
@@ -111,7 +105,7 @@ export default function Home() {
     <>
       {isMobile ? (
         // Mobile view with gallery on top
-        <div className=" relative snap-y snap-mandatory h-dvh overflow-y-scroll">
+        <div className=" relative snap-y snap-mandatory h-dvh overflow-y-scroll w-dvw overflow-x-hidden">
           <ParallaxBackground imageSrc={imageSrc} offset={offset} />
 
           {/* Blur Overlay */}
@@ -135,6 +129,7 @@ export default function Home() {
             <RightSection
               title={imageName}
               isMobile={isMobile}
+              startPlaying={startPlaying}
               fetchRandomImage={() => fetchRandomImage()}
               fetchImage={fetchImage}
               showGallery={showGallery}
@@ -171,6 +166,7 @@ export default function Home() {
           <RightSection
             title={imageName}
             isMobile={isMobile}
+            startPlaying={startPlaying}
             fetchRandomImage={() => fetchRandomImage()}
             fetchImage={fetchImage}
             showGallery={showGallery}

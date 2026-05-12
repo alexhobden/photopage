@@ -8,6 +8,7 @@ import Gallery from "./gallery";
 type Props = {
   title: string | null;
   isMobile: boolean;
+  startPlaying: boolean;
   duration?: number;
   fetchRandomImage: () => void;
   fetchImage: (imageName: string) => void;
@@ -25,6 +26,7 @@ export const RightSection = ({
   title,
   isMobile,
   duration = 2,
+  startPlaying,
   fetchRandomImage,
   fetchImage,
   showGallery,
@@ -51,9 +53,10 @@ export const RightSection = ({
   const titleRef = useRef<HTMLHeadingElement>(null);
   const [fontSize, setFontSize] = useState(64); // Default in px
   const [displayText, setDisplayText] = useState<string[]>([]);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [resetTimer, setResetTimer] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const fetchRandomImageRef = useRef(fetchRandomImage);
   const [isShuffleDisabled, setIsShuffleDisabled] = useState(false);
 
   const handleShuffleClick = () => {
@@ -109,7 +112,6 @@ export const RightSection = ({
   }, [title, duration]);
 
   useEffect(() => {
-    console.log("IVE BEEN CALLED");
     setFontSize(64);
     const adjustFontSize = () => {
       if (!titleRef.current) return;
@@ -136,6 +138,14 @@ export const RightSection = ({
   }, []);
 
   useEffect(() => {
+    fetchRandomImageRef.current = fetchRandomImage;
+  }, [fetchRandomImage]);
+
+  useEffect(() => {
+    setIsPlaying(startPlaying);
+  }, [startPlaying]);
+
+  useEffect(() => {
     if (!isPlaying) return;
 
     // Clear old interval if any
@@ -145,8 +155,8 @@ export const RightSection = ({
 
     // Start a new one
     intervalRef.current = setInterval(() => {
-      fetchRandomImage();
-    }, 6000);
+      fetchRandomImageRef.current();
+    }, 7000);
 
     // Clear on unmount
     return () => {
