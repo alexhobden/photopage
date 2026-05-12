@@ -21,6 +21,7 @@ export default function Home() {
   const [showLoadingScreen, setShowLoadingScreen] = useState(true);
   const [isFirstImageLoaded, setIsFirstImageLoaded] = useState(false);
   const [showLoadingIcon, setShowLoadingIcon] = useState(true);
+  const [startPlaying, setStartPlaying] = useState(false);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { clientX, clientY, currentTarget } = e;
@@ -61,6 +62,9 @@ export default function Home() {
           const newImage = { name: image.name, url: objectURL };
           preloadedImages.push(newImage);
           setImages([...preloadedImages]); // Update state progressively
+          if (preloadedImages.length === 10) {
+            setStartPlaying(true); // Start slideshow after first image is loaded
+          }
         } catch (error) {
           console.error(`Failed to preload ${image.name}:`, error);
           // Fallback to original URL if preload fails
@@ -73,10 +77,8 @@ export default function Home() {
     loadGallery();
   }, []);
 
-  const fetchRandomImage = (
-    galleryImages?: { name: string; url: string }[],
-  ) => {
-    const imgs = galleryImages || images;
+  const fetchRandomImage = () => {
+    const imgs = images;
     if (imgs.length === 0) return;
     const randomImage = imgs[Math.floor(Math.random() * imgs.length)];
     setImageSrc(randomImage.url);
@@ -127,6 +129,7 @@ export default function Home() {
             <RightSection
               title={imageName}
               isMobile={isMobile}
+              startPlaying={startPlaying}
               fetchRandomImage={() => fetchRandomImage()}
               fetchImage={fetchImage}
               showGallery={showGallery}
@@ -163,6 +166,7 @@ export default function Home() {
           <RightSection
             title={imageName}
             isMobile={isMobile}
+            startPlaying={startPlaying}
             fetchRandomImage={() => fetchRandomImage()}
             fetchImage={fetchImage}
             showGallery={showGallery}
