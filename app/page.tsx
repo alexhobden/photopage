@@ -105,7 +105,7 @@ export default function Home() {
     <>
       {isMobile ? (
         // Mobile view with gallery on top
-        <div className=" relative snap-y snap-mandatory h-dvh overflow-y-scroll">
+        <div className=" relative snap-y snap-mandatory h-dvh overflow-y-scroll w-dvw overflow-x-hidden">
           <ParallaxBackground imageSrc={imageSrc} offset={offset} />
 
           {/* Blur Overlay */}
