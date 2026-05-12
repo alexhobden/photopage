@@ -10,8 +10,11 @@ import Spinner from "./components/utils/spinner";
 import MobileMenu from "./components/mobile-menu";
 
 export default function Home() {
-  const [imageSrc, setImageSrc] = useState<string | null>(null);
-  const [imageName, setImageName] = useState<string | null>(null);
+  const initialImageName = "little-owl_swabian-alb_germany_1.webp";
+  const initialImageSrc = `/pictures/${initialImageName}`;
+
+  const [imageSrc, setImageSrc] = useState<string | null>(initialImageSrc);
+  const [imageName, setImageName] = useState<string | null>(initialImageName);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [showGallery, setShowGallery] = useState(false);
   const [images, setImages] = useState<{ name: string; url: string }[]>([]);
@@ -64,17 +67,6 @@ export default function Home() {
           preloadedImages.push(image);
           setImages([...preloadedImages]);
         }
-      }
-
-      // Set the specific initial image
-      const specificImage = preloadedImages.find(
-        (img) => img.name === "little-owl_swabian_alb_germany_1.webp",
-      );
-      if (specificImage) {
-        setImageSrc(specificImage.url);
-        setImageName(specificImage.name);
-      } else {
-        fetchRandomImage(preloadedImages);
       }
     };
 
